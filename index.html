@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utc-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=no">
+    
+    <style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+      .control {background-color: #6C7A89; font-family:'Raleway', serif;color: #fff; position: fixed; top:5%; right:2%; padding: 2%; z-index: 10;width: 20%; height: 50%;overflow-y: scroll;}
+      #search {padding: 2%; margin: 1%;}
+      button {background-color: #F44336;}
+      .fa-close {width: 100%; text-align: right;}
+      #list{width:100%; background-color:#96281B; border: 2px solid #C0392B;list-style: none;}
+      li {background-color: #D24D57; border: 2px solid #C0392B;}
+    </style>
+
+    <!-- Sanitize CSS, a reset to noramlize browser behavior -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!-- Google Fonts Raleway and Merriweather Sans -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway|Merriweather+Sans">
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div class="control">
+      <i class="fa fa-close"></i>
+      <div id="search">
+        <input type='text' placeholder='Search for a landmark'>
+        <button type="submit">go</button>
+      </div>
+      <div id="list">
+        <h3>Old Town Pasadena</h3>
+        <ul>
+          <li>Pasadena City Hall</li>
+          <li>King Taco</li>
+          <li>The Antiques Store</li>
+          <li>Memorial Park</li>
+          <li>Penny's Cheesecake Factory</li>
+          <li>Pasadena Civic Auditorium</li>
+          <li>Paseo Colorado</li>
+          <li>Colorado Boulevard</li>
+          <li>iPic Theaters</li>
+        </ul>
+        <h3>Nearby Points of Interest</h3>
+        <ul>
+          <li>The Rose Bowl</li>
+          <li>The Gamble House</li>
+          <li>California Institute of Technology</li>
+          <li>The Huntington Library</li>
+        </ul>
+
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- Google Maps JS -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- Knockout JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <!-- Custom JS, including Map Initialization -->
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>
