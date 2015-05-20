@@ -55,8 +55,7 @@
       padding: 0;
     }
 
-    .category {
-      mrgin-left: 1%;
+    .category { njkz
       background-color: rgba(255, 255, 255, .6);
       color: #000;
     }
@@ -86,40 +85,19 @@
     <i class="fa fa-close"></i>
     <div id="search">
       <input id="searchInput" type='text' placeholder='Search for a landmark'>
-      <button id="searchButton" type="submit">go</button>
+      <button id="searchButton" type="submit" onclick="searchMe(searchInput.value)">go</button>
     </div>
     <div id="list">
       <h3>Old Town Pasadena</h3>
-      <ul>
-        <li class="category">Restaurants</li>
-        <ul class="sub">
-          <li><i class="fa fa-cutlery"></i> King Taco</li>
-          <li><i class="fa fa-cutlery"></i> Penny's Cheesecake Factory</li>
-          <li><i class="fa fa-cutlery"></i> Barney's Beanery</li>
-          <li><i class="fa fa-cutlery"></i> Crepe Studio</li>
-          <li><i class="fa fa-cutlery"></i> Pop Champagne and Dessert Bar</li>
+      <ul data-bind="foreach: markersArray">
+        <li><img src="" alt="icon" data-bind="attr: {src: icon}"> <span data-bind="text: name"> </span></li>
         </ul>
-        <li class="category">Shopping</li>
-        <ul class="sub">
-          <li><i class="fa fa-shopping-cart"></i> Pasadena Antiques Mall</li>
-          <li><i class="fa fa-shopping-cart"></i> Paseo Colorado</li>
-          <li><i class="fa fa-shopping-cart"></i> Colorado Boulevard</li>
-        </ul>
-        <li class="category">Fun</li>
-        <ul class="sub">
-          <li><i class="fa fa-film"></i> Pasadena City Hall</li>
-          <li><i class="fa fa-leaf"></i> Memorial Park</li>
-          <li><i class="fa fa-film"></i> Penny's Cheesecake Factory</li>
-          <li><i class="fa fa-fillm"></i> Pasadena Civic Auditorium</li>
-          <li><i class="fa fa-film"></i> iPic Theaters</li>
-        </ul>
-      </ul>
     </div>
   </div>
 
 
   <!-- Google Maps JS -->
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <!-- Knockout JS -->
