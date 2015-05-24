@@ -17,6 +17,8 @@ Font Awesome Icons: http://fortawesome.github.io/Font-Awesome/icons/
 Google Maps API: https://developers.google.com/maps/documentation/ and reference: https://developers.google.com/maps/documentation/javascript/reference
 Google Maps Streetview: https://developers.google.com/maps/documentation/javascript/streetview
 
+Maps Icons Collection https://mapicons.mapsmarker.com
+
 
 
 Yelp API: https://www.yelp.com/developers/documentation

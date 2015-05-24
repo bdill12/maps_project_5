@@ -1,8 +1,12 @@
-var markersArray = [];
+var myMarkers = [];
+var service;
 // Initialize the Map after DOM is loaded.
 $(function initialize() {
   'use strict';
+  var service;
+  var infowindow;
   var oldTownPasadena = new google.maps.LatLng(34.146580, -118.147700);
+
   // Set Map Options
   var mapOptions = {
     center: oldTownPasadena,
@@ -11,7 +15,7 @@ $(function initialize() {
     mapTypeControlOptions: {
       position: google.maps.ControlPosition.LEFT_BOTTOM
     }
-  };
+  }; //Map Options
 
   // Create Map Object
   var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -43,23 +47,46 @@ $(function initialize() {
     stylers: [{
       visibility: "off"
     }]
-  }];
+  }];//Style Array
 
   // Implement Style
   map.setOptions({
-    styles: styleArray
-  });
+    styles: styleArray});//Implement Style
 
-  //Create Markers
-  var makeMyMarkers = function() {
-    markersArray = [{
+//   service = new google.maps.places.PlacesService(map);
+//   function performSearch() {
+//    var request = {
+//      bounds: map.getBounds(),
+//      keyword: 'best view'
+//    };
+//    service.radarSearch(request, callback);
+//  }
+//  function callback(results, status) {
+//    if (status != google.maps.places.PlacesServiceStatus.OK) {
+//      alert(status);
+//      return;
+ //   }
+//    for (var i= 0, result; result=results[i]; i++) {     //add markers//
+  //    distance=google.maps.geometry.spherical.computeDistanceBetween(location, result.geometry.location);
+     // if (distance>radius)
+    //    continue;
+//      var marker = new google.maps.Marker({
+  //      map: map,
+    //    position: result.geometry.location,
+      //  reference: result.reference
+     /// });
+    //}
+
+  //Create ViewModel to handle UI changes & Markers
+  var ViewModel = {
+    myMarkers: ko.observableArray([{
       name: "King Taco",
       location: new google.maps.LatLng(34.146699, -118.147875),
       icon: "js/icons/restaurant_mexican.png"
     }, {
       name: "Penny's Cheesecake Factory from The Big Bang Theory",
       location: new google.maps.LatLng(34.145522, -118.150697),
-      icon: "js/icons/tv.png" 
+      icon: "js/icons/tv.png"
     }, {
       name: "Barney's Beanery",
       location: new google.maps.LatLng(34.146100, -118.148334),
@@ -100,26 +127,24 @@ $(function initialize() {
       name: "iPic Theaters",
       location: new google.maps.LatLng(34.146569, -118.151480),
       icon: "js/icons/movierental.png"
-    }];
-    for (var i = 0; i < markersArray.length; i++) {
-        var image = markersArray[i].icon;
-				var marker = new google.maps.Marker({
-					position: markersArray[i].location,
-					map: map,
-					title: markersArray[i].name,
+    }]),
+    makeMyMarkers: function() {
+      for (var i = 0; i < ViewModel.myMarkers().length; i++) {
+        var image = ViewModel.myMarkers()[i].icon;
+        var marker = new google.maps.Marker({
+          position: ViewModel.myMarkers()[i].location,
+          map: map,
+          title: ViewModel.myMarkers()[i].name,
           icon: image
-				});
-      }
-};
-	makeMyMarkers();
+        });
+    }
+  },
+  myQuery: ko.observable()
+  };
+  ViewModel.makeMyMarkers();
+  ko.applyBindings(ViewModel);
 
-var ViewModel = {
-  myMarkers: ko.observableArray()
-};
-for (var i = 0; i < markersArray; i++) {
-  ViewModel.myMarkers.push(markersArray[i]);
-}
 
-ko.applyBindings(window.ViewModel);
 
-});
+  });
+  

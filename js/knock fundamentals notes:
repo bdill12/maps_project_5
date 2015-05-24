@@ -1,0 +1,48 @@
+knock fundamentals notes:
+
+
+Intro
+
+use "value: " to use the forms....
+"valueUpdate: 'afterkeydown'"
+"checked: "
+
+
+blog.stevesanderson.com
+
+knockmeout.net
+
+
+Observables
+
+observable
+observableArray
+computedObservables
+
+Bindings
+visible
+text
+html
+css
+style
+attr
+
+click
+event
+submit
+enabe
+disable
+value
+checked
+options
+selectedOptions
+uniqueName
+
+if
+ifnot
+foreach
+with
+
+templates
+
+Data Features
