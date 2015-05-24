@@ -118,14 +118,14 @@ $(function initialize() {
     show: ko.observable(false),
     hide: ko.observable(true),
     toggleSearch: function() {
-      viewModel.search(!viewModel.search());
-      viewModel.show(!viewModel.show());
-      viewModel.hide(!viewModel.hide());
+      ViewModel.search(!ViewModel.search());
+      ViewModel.show(!ViewModel.show());
+      ViewModel.hide(!ViewModel.hide());
     },
     searchQuery: ko.observable(""),
     goToLocation: function(marked) {
-      if (viewModel.search()) {
-        viewModel.toggleSearch();
+      if (ViewModel.search()) {
+        ViewModel.toggleSearch();
       }
       setTimeout(function() {
         map.setZoom(16);
@@ -139,19 +139,19 @@ $(function initialize() {
     }
   };
   var makeMyMarkers = function() {
-    for (var i = 0; i < viewModel.myMarkers().length; i++) {
-      var image = viewModel.myMarkers()[i].icon;
+    for (var i = 0; i < ViewModel.myMarkers().length; i++) {
+      var image = ViewModel.myMarkers()[i].icon;
       var marker = new google.maps.Marker({
-        position: viewModel.myMarkers()[i].location,
+        position: ViewModel.myMarkers()[i].location,
         map: map,
-        title: viewModel.myMarkers()[i].name,
+        title: ViewModel.myMarkers()[i].name,
         icon: image
       });
     }
     map.setOptions({
       styles: styleArray
     });
-    ko.applyBindings(viewModel);
+    ko.applyBindings(ViewModel);
     var oauth = OAuth({
     consumer: {
         public: 'gWgPHhf_cUVygsDdtxhxBA',
@@ -159,7 +159,7 @@ $(function initialize() {
     },
     signature_method: 'HMAC-SHA1'
 });
-var yelpURL = 'http://api.yelp.com/v2/search?term=' + viewModel.searchQuery() + '&limit=20&radius_filter=600&ll=34.146580,-118.147700';
+var yelpURL = 'http://api.yelp.com/v2/search?term=' + ViewModel.searchQuery() + '&limit=20&radius_filter=600&ll=34.146580,-118.147700';
 var request_data = {
     url: yelpURL,
     method: 'POST',
