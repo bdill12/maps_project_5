@@ -2,7 +2,8 @@
 $(function initialize() {
   'use strict';
   var oldTownPasadena = new google.maps.LatLng(34.146580, -118.147700);
-  //  Set Map Options
+
+  // Set Map Options
   var mapOptions = {
     center: oldTownPasadena,
     zoom: 16,
@@ -16,7 +17,6 @@ $(function initialize() {
     },
     draggable: true
   };
-
   // Create Map Object
   var map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
@@ -64,7 +64,7 @@ $(function initialize() {
   var tvLandmark = "js/icons/star-3.png";
 
   // Create Model to Hold Knockout Data
-  var viewModel = {
+  var ViewModel = {
     myMarkers: ko.observableArray([{
       name: "King Taco",
       location: new google.maps.LatLng(34.146699, -118.147875),
@@ -182,4 +182,3 @@ $.ajax({
 });
 }();
 });
-

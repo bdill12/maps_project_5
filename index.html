@@ -4,7 +4,6 @@
 <head>
   <meta charset="utc-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=no">
-
   <!-- Sanitize CSS, a reset to noramlize browser behavior -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
   <!-- Font Awesome Icons -->
@@ -18,9 +17,8 @@
 <body>
   <div class="toggleSearch show" data-bind="click: $root.toggleSearch, visible: $root.show">
         <h2>Go to Search View</h2>
-      </div>
+  </div>
   <div id="map-canvas"></div>
-  
   <div class="control" data-bind="visible: $root.search">
     <div class="header">
     <div class="toggleSearch" data-bind="click: $root.toggleSearch">
@@ -35,11 +33,7 @@
       <ul data-bind="foreach: myMarkers">
         <li data-bind="click: $root.goToLocation"><img src="" alt="icon" data-bind="attr: {src: icon}"> <span data-bind="text: name"> </span></li>
         </ul>
-    </div> 
-
-  </div>
-
-
+    </div>
   <!-- Google Maps JS -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
   <!--oauth-1/0a/js for requesting from Yelp API-->
