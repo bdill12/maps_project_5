@@ -1,0 +1,123 @@
+    html, body, #map-canvas {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .control {
+      background-color: #6C7A89;
+      background-image: url(images/bricks.jpg);
+      background-size: cover;
+      font-family: 'Raleway', serif;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+      overflow-y: scroll;
+    }
+
+    #search {
+      margin: 0 5%; 
+      width: 90%;
+    }
+
+    #search input {
+      width: 100%;
+      padding: 1%;
+      border-radius: 10px;
+      background-repeat: no-repeat;
+      background-image: url(https://s3-media1.fl.yelpcdn.com/assets/2/www/img/1589098a542f/developers/Powered_By_Yelp_White.png);
+      background-position: 95%;
+      color: #000;
+    }
+    #search input:focus {
+      background-color: #fff;
+      background-image: none;
+    }
+
+    #list {
+      width: 80%;
+      height: 80%;
+      background-color: #96281B;
+      background-color: rgba(0, 0, 0, .6);
+      margin: 0 auto;
+      overflow-y: scroll;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    h3 {
+      text-align: center;
+      background-color: #96281B;
+      background-color: rgba(0, 0, 0, .6);
+      font-size: 2.5em;
+      margin:0;
+      padding: 2%;
+    }
+
+    li img {
+      margin: 0 1%;
+    }
+
+    li:hover {
+      background-color: rgba(250,250,250,.6);
+      color: #000;
+      cursor: pointer;
+    }
+    h2 {
+      font-family: "Raleway", serif;
+      font-size: 1em;
+    }
+    .toggleSearch{
+      z-index: 100;
+      position: fixed;
+      top: 1%;
+      right: 1%;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 1%;
+      background-color: #fff;
+      color: #000;
+      font-family: "Maerriweather Sans", serif;
+      font-size: 1em;
+      text-align: center;
+    }
+
+    .toggleSearch:hover {
+      background-color: rgba(0,0,0,.6);
+      color: #fff;
+      border-color: #fff;
+      cursor: pointer;
+
+    }
+
+    @media screen and (max-width: 480px){
+      .toggleSearch {
+        border: none;
+        position: static;
+        width:80%;
+        margin: 0 auto;
+      }
+
+      #search {
+        margin: 3% 10%; 
+        width: 78%;
+
+      }
+      #search input {
+        color: #000;
+        padding: 3% 0;
+      }
+      .show {
+        position: fixed;
+        top: 0;
+        right: 2%;
+      }
+
+
+    }
