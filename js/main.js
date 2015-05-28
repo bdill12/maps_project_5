@@ -21,14 +21,6 @@ $(function initialize() {
   var map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
-  var $canvas = $('#map-canvas');
-  $canvas.bind('touchmove', function(e) {
-    e.preventDefault();
-    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-    map.scrollBy(0, (touch.pageY - touch.pageX));
-    console.log(touch.pageY + ' ' + touch.pageX);
-  });
-
   //Style the Map's color, and labels with styleArray
   var styleArray = [{
     featureType: "all",
@@ -62,58 +54,16 @@ $(function initialize() {
   var outdoors = "js/icons/amphitheater-2.png";
   var entertainment = "js/icons/movierental.png";
   var tvLandmark = "js/icons/star-3.png";
+  //Coffee Shops
+  var coffeeShops = "js/icons/coffee.png";
+  //Mexican Food
+  var icon4bf58dd8d48988d151941735_id = "js/icons/restaurant_mexican.png";
+  //Neighborhoods
+  var icon4f2a25ac4b909258e854f55f_id = "js/icons/citysquare.png";
+
 
   // Create Model to Hold Knockout Data
   var ViewModel = {
-    myMarkers: ko.observableArray([{
-      name: "King Taco",
-      location: new google.maps.LatLng(34.146699, -118.147875),
-      icon: restaurant
-    }, {
-      name: "Penny's Cheesecake Factory",
-      location: new google.maps.LatLng(34.145522, -118.150697),
-      icon: tvLandmark
-    }, {
-      name: "Barney's Beanery",
-      location: new google.maps.LatLng(34.146100, -118.148334),
-      icon: restaurant
-    }, {
-      name: "Crepe Studio",
-      location: new google.maps.LatLng(34.146976, -118.148322),
-      icon: restaurant
-    }, {
-      name: "Pop! Champagne Bar",
-      location: new google.maps.LatLng(34.147078, -118.149716),
-      icon: restaurant
-    }, {
-      name: "Pasadena Antique Mall",
-      location: new google.maps.LatLng(34.144846, -118.143920),
-      icon: shopping
-    }, {
-      name: "Paseo Colorado",
-      location: new google.maps.LatLng(34.145246, -118.144314),
-      icon: shopping
-    }, {
-      name: "Colorado Boulevard",
-      location: new google.maps.LatLng(34.145700, -118.15000),
-      icon: shopping
-    }, {
-      name: "Pasadena City Hall",
-      location: new google.maps.LatLng(34.147633, -118.143566),
-      icon: tvLandmark
-    }, {
-      name: "Memorial Park",
-      location: new google.maps.LatLng(34.148336, -118.147454),
-      icon: outdoors
-    }, {
-      name: "Pasadena Civic Auditorium",
-      location: new google.maps.LatLng(34.143771, -118.144274),
-      icon: entertainment
-    }, {
-      name: "iPic Theaters",
-      location: new google.maps.LatLng(34.146569, -118.151480),
-      icon: entertainment
-    }]),
     search: ko.observable(true),
     show: ko.observable(false),
     hide: ko.observable(true),
@@ -136,8 +86,85 @@ $(function initialize() {
       setTimeout(function() {
         map.setZoom(19);
       }, 750);
-    }
-  };
+    },
+    myMarkers: ko.observableArray([{
+      name: "King Taco",
+      location: new google.maps.LatLng(34.146699, -118.147875)
+    //  icon: restaurant
+    }, {
+      name: "Penny's Cheesecake Factory",
+      location: new google.maps.LatLng(34.145522, -118.150697)
+    //  icon: tvLandmark
+    }, {
+      name: "Barney's Beanery",
+      location: new google.maps.LatLng(34.146100, -118.148334)
+    //  icon: restaurant
+    }, {
+      name: "Crepe Studio",
+      location: new google.maps.LatLng(34.146976, -118.148322)
+    //  icon: restaurant
+    }, {
+      name: "Pop! Champagne Bar",
+      location: new google.maps.LatLng(34.147078, -118.149716)
+    //  icon: restaurant
+    }, {
+      name: "Pasadena Antique Mall",
+      location: new google.maps.LatLng(34.144846, -118.143920)
+     // icon: shopping
+    }, {
+      name: "Paseo Colorado",
+      location: new google.maps.LatLng(34.145246, -118.144314)
+    //  icon: shopping
+    }, {
+      name: "Colorado Boulevard",
+      location: new google.maps.LatLng(34.145700, -118.15000)
+    //  icon: shopping
+    }, {
+      name: "Pasadena City Hall",
+      location: new google.maps.LatLng(34.147633, -118.143566)
+     // icon: tvLandmark
+    }, {
+      name: "Memorial Park",
+      location: new google.maps.LatLng(34.148336, -118.147454)
+   //   icon: outdoors
+    }, {
+      name: "Pasadena Civic Auditorium",
+      location: new google.maps.LatLng(34.143771, -118.144274)
+    //  icon: entertainment
+    }, {
+      name: "iPic Theaters",
+      location: new google.maps.LatLng(34.146569, -118.151480)
+//      icon: entertainment
+    }])
+  //  parseResults: function(responses) {
+    //  for (var i = 0; i < responses.response.groups[0].items.length; i++) {
+   //     var result = responses.response.groups[0].items[i].venue;
+     //   var venue = {
+       //   name: result.name,
+         // location: new google.maps.LatLng(result.location.lat, result.location.lng),
+//          icon: result.categories[0].name.replace(" ", ""),
+  //        photoURL: result.featuredPhotos.items[0].prefix + result.featuredPhotos.items[0].suffix,
+    //      photoHeight: result.featuredPhotos.items[0].height,
+      //    photowidth: result.featuredPhotos.items[0].width,
+        //  phone: result.contact.formattedPhone,
+ //         twitter: result.contact.twitter,
+        //  open: result.hours.status,
+   //     open: result.hours,
+     //     address1: result.location.formattedAddress[0],
+       //   address2: result.location.formattedAddress[1],
+         // address3: result.location.formattedAddress[2],
+        //  price: result.price.message,
+ //       price: result.price,
+        //  rating: result.price.rating,
+   //       url: result.url
+     //   };
+    //    if (category == "Coffee Shops") {
+      //    this.venue.icon = 
+  //      }
+   //     ViewModel.myMarkers.push(venue);
+      };
+  //  }
+//  };
   var makeMyMarkers = function() {
     for (var i = 0; i < ViewModel.myMarkers().length; i++) {
       var image = ViewModel.myMarkers()[i].icon;
@@ -145,40 +172,16 @@ $(function initialize() {
         position: ViewModel.myMarkers()[i].location,
         map: map,
         title: ViewModel.myMarkers()[i].name,
-        icon: image
+      //  icon: image
       });
     }
-    map.setOptions({
-      styles: styleArray
-    });
-    ko.applyBindings(ViewModel);
-    var oauth = OAuth({
-    consumer: {
-        public: 'gWgPHhf_cUVygsDdtxhxBA',
-        secret: 'LyiUUi2Kl4123DYz5YqXt3jb4sY'
-    },
-    signature_method: 'HMAC-SHA1'
-});
-var yelpURL = 'http://api.yelp.com/v2/search?term=' + ViewModel.searchQuery() + '&limit=20&radius_filter=600&ll=34.146580,-118.147700';
-var request_data = {
-    url: yelpURL,
-    method: 'POST',
-    data: {
-        status: 'Hello Ladies + Gentlemen, a signed OAuth request!'
-    }
-};
-var token = {
-    public: 'rE0G5zUpsVWJ8e5UU4adj5H_H7mxZfDz',
-    secret: 'X2AkFXAyJ7gn64rib2FD4cCYQYU'
-};
-
-$.ajax({
-    url: request_data.url,
-    type: request_data.method,
-    data: request_data.data,
-    headers: oauth.toHeader(oauth.authorize(request_data, token))
-}).done(function(data) {
-    console.log(data);
-});
-}();
+  };
+  map.setOptions({styles: styleArray});
+  ko.applyBindings(ViewModel);
+ // var clientId = 'OSDBVMKK4BLXPU14JLBUB0HVLVMNUIRHBTLRA33LUMSFH2BT';
+//  var clientSecret = 'AE41EWYBOYBGY5AKSW5DBPRQW2DD5MK3Y1YLCLO3KTBQITSG';
+ // var foursquareURL = 'https://api.foursquare.com/v2/venues/explore?client_id='+clientId+'&client_secret='+clientSecret+'&v=20130815&ll=34.146580,-118.147700&radius=600&limit=50&venuePhotos=1&query=' + ViewModel.searchQuery();
+ // $.getJSON(foursquareURL, function(response){
+ //   ViewModel.parseResults(response);
+  //});
 });

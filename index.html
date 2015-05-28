@@ -16,13 +16,13 @@
 
 <body>
   <div class="toggleSearch show" data-bind="click: $root.toggleSearch, visible: $root.show">
-        <h2>Go to Search View</h2>
+        <h2>List View</h2>
   </div>
   <div id="map-canvas"></div>
   <div class="control" data-bind="visible: $root.search">
     <div class="header">
     <div class="toggleSearch" data-bind="click: $root.toggleSearch">
-        <h2 data-bind="visible: $root.hide">Go to Map View</h2>
+        <h2 data-bind="visible: $root.hide">Map View</h2>
     </div>
       <h3>Old Town Pasadena</h3>
     </div>
@@ -31,9 +31,10 @@
     </div>
     <div id="list">
       <ul data-bind="foreach: myMarkers">
-        <li data-bind="click: $root.goToLocation"><img src="" alt="icon" data-bind="attr: {src: icon}"> <span data-bind="text: name"> </span></li>
+        <li data-bind="click: $root.goToLocation"><!--<img src="" alt="icon" data-bind="attr: {src: icon}">--><span class="addIcons" data-bind="text: name"></span></li>
         </ul>
     </div>
+    <div class="finePrint"><h6>This service uses the Foursquare® application programming interface but is not endorsed or certified by Foursquare Labs, Inc. All of the Foursquare® logos (including all badges) and trademarks displayed on this [application/service] are the property of Foursquare Labs, Inc.</h6></div>
   <!-- Google Maps JS -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
   <!--oauth-1/0a/js for requesting from Yelp API-->
