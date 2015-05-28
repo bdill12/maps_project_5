@@ -81,6 +81,7 @@ $(function initialize() {
     self.searchQuery = ko.observable("");
 
     self.myMarkers = ko.observableArray();
+    self.someMarkers = ko.observableArray();
 
     self.search = ko.observable(true);
     self.show = ko.observable(false);
@@ -105,6 +106,7 @@ $(function initialize() {
     self.tipPhoto = ko.observable();
     self.infoVisit4 = ko.observable();
     self.ontheweb = ko.observable();
+    self.infoVisible = ko.observable(true);
     self.clientId ='OSDBVMKK4BLXPU14JLBUB0HVLVMNUIRHBTLRA33LUMSFH2BT';
     self.clientSecret = 'AE41EWYBOYBGY5AKSW5DBPRQW2DD5MK3Y1YLCLO3KTBQITSG';
 
@@ -159,7 +161,6 @@ $(function initialize() {
 
     // Parse results from Foursquare API Venues Database
     self.parseResults = function(responses) {
-      console.log(responses);
       for (var i = 0; i < responses.response.groups[0].items.length; i++) {
         var prefix = responses.response.groups[0].items[i];
         var result = prefix.venue;
@@ -184,8 +185,10 @@ $(function initialize() {
           tipURL: tips.canonicalUrl,
           tipPhoto: tips.user.photo.prefix + "64" + tips.user.photo.suffix,
           visit4: "Visit " + result.name + " on Foursquare",
-          ontheweb: "Visit " + result.name + " on the web"
+          ontheweb: "Visit " + result.name + " on the web",
+          visible: true
         })
+        self.someMarkers.push(marker);
         self.myMarkers.push(marker);
         google.maps.event.addListener(marker, 'click', function() {
           self.goToLocation(this);
@@ -210,6 +213,9 @@ $(function initialize() {
         self.infoClose();
     }
   });
+
+  // Filter Through Given Results
+
 
   // Search
   $('#searchInput').keypress(function(event) {

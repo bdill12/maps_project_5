@@ -30,8 +30,11 @@
       <input id="searchInput" data-bind="textInput: $root.searchQuery" type="text" placeholder="Search">
     </div>
     <div id="list">
-      <ul data-bind="foreach: $root.myMarkers">
-        <li class="searchItem" data-bind="click: $root.goToLocation"><img src="" alt="icon" data-bind="attr: {src: icon}"><span data-bind="text: title"></span></li>
+      <div class="search" data-bind="visible: $root.searchQuery">
+        <img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png">Search for: <span data-bind="text: searchQuery"></span>
+      </div>
+     <ul data-bind="foreach: $root.myMarkers">
+        <li class="searchItem" data-bind="click: $root.goToLocation, visible: $root.infoVisible"><img src="" alt="icon" data-bind="attr: {src: icon}"><span data-bind="text: title"></span></li>
         </ul>
     </div>
     <div class="fineprint">
@@ -46,8 +49,9 @@
     <img id="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}">
     <div class="container">
     <div id="infoContact" class="info">
-    <form action="" data-bind="visible: infoTweet, attr: {action: infoTwitterURL"}>
-        <input class="visit" type="submit" data-bind="value: infoTwitter">
+    <h5>Contact:</h5>
+    <form data-bind="visible: infoTweet, attr: {action: infoTwitterURL}">
+        <input class="visit tweet" type="submit" data-bind="value: infoTwitter">
         </form>
       <p data-bind="visible: infoPhone">
         <span data-bind="text: infoPhone"></span>

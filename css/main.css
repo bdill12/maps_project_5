@@ -1,32 +1,15 @@
-body:before {
-  content: "";
-  position: fixed;
-  top: -10px;
-  left: 0;
-  width: 100%;
-  height: 10px;
-  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
-  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
-  box-shadow: 0px 0px 10px rgba(0,0,0,.8);
-  z-index: 100;
-}
-
-
 html, body, #map-canvas {
   height: 100%;
   margin: 0;
   padding: 0;
-  color: #2c3e50;
+  color: #fff;
 }
 
 .control {
-  background-color: #6C7A89;
-  background-image: url(images/bricks.jpg);
-  background-size: cover;
+  background-color: transparent;
   font-family: 'Merriweather Sans', sans-serif;
   width: 100%;
   height: 100%;
-  color: #2c3e50;
   position: fixed;
   top: 0;
   z-index: 10;
@@ -36,7 +19,7 @@ html, body, #map-canvas {
 #search {
   margin: 0 5%; 
   width: 90%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+  color: #2c3e50;
 }
 
 #search input {
@@ -46,6 +29,7 @@ html, body, #map-canvas {
   background-repeat: no-repeat;
   background-image: url(images/powered.jpg);
   background-position: 95%;
+  color: #2c3e50;
 }
 
 #list {
@@ -56,8 +40,7 @@ html, body, #map-canvas {
   margin: 0 auto;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
-  color: #ecf0f1;
+  color: #fff;
 }
 
 ul {
@@ -68,10 +51,10 @@ ul {
 .header {
   text-align: center;
   background-color: #2c3e50;
-  color: #ecf0f1;
+  color:#fff;
   margin:0 0 1% 0;
-  padding: 2%;
-  box-shadow: 0 2px 5px #FFEBEE;
+  padding: 1%;
+  box-shadow: 0 5px 7px #000;
 }
 
 h3 {
@@ -80,16 +63,16 @@ h3 {
 }
 
 .searchItem {
-  margin: 1%;
   padding: 1%;
+  margin: 1%;
 }
 
 .searchItem img {
-  margin: 0 1% 0 0;
+  margin: 0 1%;
 }
 
 .searchItem:hover {
-  background-color: rgba(250,250,250,.6);
+  background-color: rgba(250,250,250,.7);
   color: #2c3e50;
   cursor: pointer;
 }
@@ -100,17 +83,15 @@ h2 {
 }
 
 .toggleSearch{
-  z-index: 100;
+  z-index: 10;
   position: fixed;
   top: 3%;
   right: 1%;
   border: 2px solid #2c3e50;
   border-radius: 10px;
   padding: 1%;
-  background-color: #ecf0f1;
+  background-color: #fff;
   color: #2c3e50;
-  font-family: "Maerriweather Sans", serif;
-  font-size: 1em;
   text-align: center;
   box-shadow: 0 2px 7px rgba(0,0,0,0.7);
 }
@@ -125,12 +106,11 @@ a:visited {
   color: inherit;
 }
 
-
 .visit, .tip {
   border: 2px solid #2c3e50;
   border-radius: 10px;
   padding: 3%;
-  background-color: #ecf0f1;
+  background-color: #fff;
   color: #2c3e50;
   font-family: "Maerriweather Sans", serif;
   margin: 2%;
@@ -143,17 +123,18 @@ a:visited {
 .toggleSearch:hover, .searchItem:hover, .visit:hover {
   background-color: #2c3e50;
   background-color: rgba(44,62,80,.8);
-  color: #ecf0f1;
-  border-color: #ecf0f1;
+  color: #fff;
+  border-color: #fff;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(255,255,255,0.26);
   text-decoration: none;
 }
+
 .fineprint {
   background-color: #2c3e50;
   text-align: center;
   font-size: 1.5em;
-  color: #ecf0f1;
+  color: #fff;
   margin: 1% 0 0 0;
   padding: .25%;
 }
@@ -175,26 +156,33 @@ a:visited {
 #close {
   float: right;
   font-size: 1em;
-  background-color: #fff;
-  background-color: rgba(255,255,255,.6);
+  background-color: #2c3e50;
+  background-color: rgba(44,62,80,.8);
   border-radius: 10px;
   padding: .5%;
+  margin-right: 1%;
 }
 
 #close:hover {
   cursor: pointer;
 }
 
-.infoHeader{
+.infoHeader {
   color: #2c3e50;
-  background-color: #fff;
-  background-color: rgba(255,255,255,.6);
-  padding: 2%;
   margin-bottom: 0;
+  position: absolute;
+  width: 100%;
+  color: #fff;
+  padding: 1% 0;
 }
 
 h4 {
-  font-size: 1.5em;
+  font-size: 3em;
+  background-color: #2c3e50;
+  background-color: rgba(44,62,80,.8);
+  border-radius: 10px;
+  padding: 1% 0;
+
 }
 
 .info {
@@ -242,7 +230,12 @@ h5 {
 
 .tweet {
   text-align: center;
-  font-size: 2em;
+  font-size: 1.5em;
+}
+
+.search img {
+  height: 5em;
+  width: auto;
 }
 
 
