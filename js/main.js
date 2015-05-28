@@ -70,52 +70,70 @@ $(function initialize() {
   }];
   map.setOptions({styles: styleArray});
 
-  var model = {
-    clientId: 'OSDBVMKK4BLXPU14JLBUB0HVLVMNUIRHBTLRA33LUMSFH2BT',
-    clientSecret: 'AE41EWYBOYBGY5AKSW5DBPRQW2DD5MK3Y1YLCLO3KTBQITSG',
-    limit: 25,
-    radius: 600,
-    latitude: 34.146580,
-    longitude: -118.147700
-  };
 
-
-  // Create Model to Hold Knockout Data
   var ViewModel = function() {
+    // Create Observable Variables and Arrays, Cache Id and Secret
     var self = this;
+    self.limit = ko.observable(25);
+    self.radius = ko.observable(600);
+    self.latitude = ko.observable(34.146580);
+    self.longitude = ko.observable(-118.147700);
     self.searchQuery = ko.observable("");
-    self.foursquareURL = 'https://api.foursquare.com/v2/venues/explore?client_id='+model.clientId+'&client_secret='+model.clientSecret+'&v=20130815&ll='+model.latitude+','+model.longitude+'&radius='+model.radius+'&limit='+model.limit+'&venuePhotos=1';
+
     self.myMarkers = ko.observableArray();
+
     self.search = ko.observable(true);
     self.show = ko.observable(false);
     self.hide = ko.observable(true);
     self.viewInfo = ko.observable(false);
+
     self.infoTitle = ko.observable();
+    self.infoId = ko.observable();
+    self.infoTweet = ko.observable();
     self.infoTwitter = ko.observable();
+    self.infoTwitterURL = ko.observable();
     self.infoPhone = ko.observable();
     self.infoURL = ko.observable();
     self.infoImage = ko.observable();
     self.infoAddress1 = ko.observable();
     self.infoAddress2 = ko.observable();
     self.infoAddress3 = ko.observable();
-    self.infoTips = ko.observableArray();
+    self.infoPhoto = ko.observable();
+    self.tipText = ko.observable();
+    self.tipName = ko.observable();
+    self.tipURL = ko.observable();
+    self.tipPhoto = ko.observable();
+    self.infoVisit4 = ko.observable();
+    self.ontheweb = ko.observable();
+    self.clientId ='OSDBVMKK4BLXPU14JLBUB0HVLVMNUIRHBTLRA33LUMSFH2BT';
+    self.clientSecret = 'AE41EWYBOYBGY5AKSW5DBPRQW2DD5MK3Y1YLCLO3KTBQITSG';
 
     // Assign the Correct Values to each Variable and open Info Window
     self.infoWindow = function(clicked) {
       self.infoTitle(clicked.title);
+      self.infoId(clicked.id);
+      self.infoTweet(clicked.tweet);
       self.infoTwitter(clicked.twitter);
+      self.infoTwitterURL(clicked.twitterURL);
       self.infoPhone(clicked.phone);
       self.infoURL(clicked.url);
       self.infoImage(clicked.photoURL);
       self.infoAddress1(clicked.address1);
       self.infoAddress2(clicked.address2);
       self.infoAddress3(clicked.address3);
-      self.infoTips(clicked.tips);
+      self.infoPhoto(clicked.photo);
+      self.tipText(clicked.tipText);
+      self.tipName(clicked.tipName);
+      self.tipURL(clicked.canonicalUrl);
+      self.tipPhoto(clicked.tipPhoto);
+      self.infoVisit4(clicked.visit4);
+      self.ontheweb(clicked.ontheweb);
       self.viewInfo(true);
     };
 
     // Close the Info Window
     self.infoClose = function() {
+      $("#infowindow").scrollTop(0);
       self.viewInfo(false);
     };
 
@@ -126,7 +144,7 @@ $(function initialize() {
       self.hide(!self.hide());
     };
 
-    // Move Map to center on chosen location
+    // Center Map on chosen location
     self.goToLocation= function(marked) {
       if (self.search()) {
         self.toggleSearch();
@@ -141,30 +159,32 @@ $(function initialize() {
 
     // Parse results from Foursquare API Venues Database
     self.parseResults = function(responses) {
+      console.log(responses);
       for (var i = 0; i < responses.response.groups[0].items.length; i++) {
         var prefix = responses.response.groups[0].items[i];
         var result = prefix.venue;
-        var myTips = [];
-          for (var t = 0; t < prefix.tips.length; t++) {
-            myTips.push({
-              tipText: prefix.tips[t].text,
-              tipName: prefix.tips[t].user.firstName,
-              tipURL: prefix.tips[t].canonicalUrl,
-              tipPhoto: prefix.tips[t].user.photo.prefix + "44" + prefix.tips[t].user.photo.suffix
-            });
-          }
+        var tips = prefix.tips[0];
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(result.location.lat, result.location.lng),
           map: map,
           title: result.name,
+          id: "http://foursquare.com/v/" + result.id,
           icon: result.categories[0].icon.prefix + "bg_44" + result.categories[0].icon.suffix,
           phone: result.contact.formattedPhone,
-          twitter: result.contact.twitter,
+          tweet: result.contact.twitter,
+          twitter: "@"+result.contact.twitter,
+          twitterURL: "https://twitter.com/" + result.contact.twitter,
           address1: result.location.formattedAddress[0],
           address2: result.location.formattedAddress[1],
           address3: result.location.formattedAddress[2],
+          photo: result.photos.groups[0].items[0].prefix + "800x200" + result.photos.groups[0].items[0].suffix,
           url: result.url,
-          tips: myTips
+          tipText: tips.text,
+          tipName: tips.user.firstName,
+          tipURL: tips.canonicalUrl,
+          tipPhoto: tips.user.photo.prefix + "64" + tips.user.photo.suffix,
+          visit4: "Visit " + result.name + " on Foursquare",
+          ontheweb: "Visit " + result.name + " on the web"
         })
         self.myMarkers.push(marker);
         google.maps.event.addListener(marker, 'click', function() {
@@ -176,8 +196,8 @@ $(function initialize() {
 
   // Search the Foursquare Venues database for results
   self.foursquareSearch = function() {
-    var fourSearch = self.foursquareURL + "&query='" + self.searchQuery() + "'";
-    $.getJSON(fourSearch, function(response) {
+    var foursquareURL = 'https://api.foursquare.com/v2/venues/explore?client_id='+self.clientId+'&client_secret='+self.clientSecret+'&v=20130815&ll='+self.latitude()+','+self.longitude()+'&radius='+self.radius()+'&limit='+self.limit()+'&venuePhotos=1'+ "&query='"+self.searchQuery()+"'";
+    $.getJSON(foursquareURL, function(response) {
       self.parseResults(response);
     });
   };

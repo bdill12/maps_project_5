@@ -39,12 +39,16 @@
     </div>
   </div>
 <div id="infowindow" data-bind="visible: viewInfo">
+  <div class="infoHeader">
     <span data-bind="click: infoClose" id="close">x close</span>
     <h4 data-bind="text: infoTitle"></h4>
+  </div>
+    <img id="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}">
+    <div class="container">
     <div id="infoContact" class="info">
-      <p data-bind="visible: infoTwitter">
-        On Twitter: <span data-bind="text: infoTwitter"></span>
-      </p>
+    <form action="" data-bind="visible: infoTweet, attr: {action: infoTwitterURL"}>
+        <input class="visit" type="submit" data-bind="value: infoTwitter">
+        </form>
       <p data-bind="visible: infoPhone">
         <span data-bind="text: infoPhone"></span>
       </p>
@@ -53,23 +57,26 @@
         <span data-bind="text: infoAddress2"></span><br>
         <span data-bind="text: infoAddress3"></span>
       </p>
-      <p data-bind="visible: infoURL">
-        <a href="" data-bind="attr: {href: infoURL}">
-          Visit <span data-bind="text: infoTitle"></span> on the web
-        </a>
-      </p>
+      <form action="" data-bind="attr: {action: infoURL}, visible: infoURL">
+        <input class="visit" type="submit" value="" data-bind="value: ontheweb">
+        </form>
     </div>
-    <div id="infoTip" data-bind="visible: infoTips" class="info">
-      <h5>Tips:</h5>
-      <ul data-bind="foreach: infoTips">
-        <a href="" data-bind="attr: {href: tipURL}">
-          <li>
+    <div id="infoTip" data-bind="visible: tipText" class="info">
+      <h5>Top Tip:</h5>
+        <div class="tip">
+          <p>
             <img class="tipImg" src="" data-bind="attr: {src: tipPhoto}">
-            <span data-bind="text: tipName"></span> says:
-            <p data-bind="text: tipText"></p>"</li></a>
-      </ul>
-    </div>
-  </div>
+              <span data-bind="text: tipName"></span> says:</p>
+            <p>
+                <span class="tipContent" data-bind="text: tipText"></span>
+            </p>
+          </div>
+          <form action="" data-bind="attr: {action: infoId}, visible: infoId">
+        <input class="visit" type="submit" data-bind="value: infoVisit4">
+        </form>
+      </div> <!-- infoTip -->
+    </div> <!-- container -->
+  </div> <!--infowindow -->
 
   <!-- Google Maps JS -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
