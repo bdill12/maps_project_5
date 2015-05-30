@@ -2,97 +2,157 @@
 <html>
 
 <head>
-  <meta charset="utc-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=no">
-  <!-- Sanitize CSS, a reset to noramlize browser behavior -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-  <!-- Google Fonts Raleway and Merriweather Sans -->
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway|Merriweather+Sans">
-  <!-- Custom CSS-->
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="utc-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=no">
+
+    <title>Explore Old Town Pasadena</title>
+
+    <!-- Sanitize CSS, a reset to noramlize browser behavior -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
+    <!-- Google Fonts Raleway and Merriweather Sans -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway|Merriweather+Sans">
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-  <div class="toggleSearch show" data-bind="click: $root.toggleSearch, visible: $root.show">
-    <h2>List View</h2>
-  </div>
-  <div id="map-canvas"></div>
-  <div class="control" data-bind="visible: $root.search">
-    <div class="header">
-      <div class="toggleSearch" data-bind="click: $root.toggleSearch, visible: $root.hide">
-        <h2>Map View</h2>
-      </div>
-      <h3>Old Town Pasadena</h3>
+    <h1>Explore Popular Spots on Foursquare in Old Town Pasadena, California</h1>
+    <div class="toggleSearch show" data-bind="click: $root.toggleSearch, visible: $root.show">
+        <h2>List View</h2>
     </div>
-    <div id="search">
-      <input id="searchInput" data-bind="textInput: $root.searchQuery" type="text" placeholder="Search">
-    </div>
-    <div id="list">
-      <div class="search" data-bind="visible: $root.searchQuery">
-        <img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png">Search for: <span data-bind="text: searchQuery"></span>
-      </div>
-     <ul data-bind="foreach: $root.myMarkers">
-        <li class="searchItem" data-bind="click: $root.goToLocation, visible: $root.infoVisible"><img src="" alt="icon" data-bind="attr: {src: icon}"><span data-bind="text: title"></span></li>
-        </ul>
-    </div>
-    <div class="fineprint">
-      <h6>This service uses the Foursquare&reg; application programming interface but is not endorsed or certified by Foursquare Labs, Inc. All of the Foursquare&reg; logos (including all badges) and trademarks displayed on this [application/service] are the property of Foursquare Labs, Inc.</h6>
-    </div>
-  </div>
-<div id="infowindow" data-bind="visible: viewInfo">
-  <div class="infoHeader">
-    <span data-bind="click: infoClose" id="close">x close</span>
-    <h4 data-bind="text: infoTitle"></h4>
-  </div>
-    <img id="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}">
-    <div class="container">
-    <div id="infoContact" class="info">
-    <h5>Contact:</h5>
-    <form data-bind="visible: infoTweet, attr: {action: infoTwitterURL}">
-        <input class="visit tweet" type="submit" data-bind="value: infoTwitter">
-        </form>
-      <p data-bind="visible: infoPhone">
-        <span data-bind="text: infoPhone"></span>
-      </p>
-      <p data-bind="visible: infoAddress1">
-        <span data-bind="text: infoAddress1"></span><br>
-        <span data-bind="text: infoAddress2"></span><br>
-        <span data-bind="text: infoAddress3"></span>
-      </p>
-      <form action="" data-bind="attr: {action: infoURL}, visible: infoURL">
-        <input class="visit" type="submit" value="" data-bind="value: ontheweb">
-        </form>
-    </div>
-    <div id="infoTip" data-bind="visible: tipText" class="info">
-      <h5>Top Tip:</h5>
-        <div class="tip">
-          <p>
-            <img class="tipImg" src="" data-bind="attr: {src: tipPhoto}">
-              <span data-bind="text: tipName"></span> says:</p>
-            <p>
-                <span class="tipContent" data-bind="text: tipText"></span>
+    <div id="map-canvas"></div>
+    <div class="control" data-bind="visible: $root.search">
+        <div class="header">
+            <span class="help" data-bind="click: $root.toggleHelp">help</span>
+            <div class="toggleSearch" data-bind="click: $root.toggleSearch, visible: $root.hide">
+                <h2>Map View</h2>
+            </div>
+            <h3>Old Town Pasadena</h3>
+        </div>
+        <div class="search">
+            <input id="searchInput" data-bind="event: {keydown: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
+            <input class="button" type="submit" value="Search" data-bind="click: $root.foursquareSearch">
+        </div>
+
+        <div class="container searchFor" data-bind="visible: $root.searchQuery">
+            <img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png" alt="foursquare logo">
+            <p>Search for: <span data-bind="text: searchQuery"></span>
+                <br>
+                <span data-bind="visible: $root.apology">No matching results. Press return to search instead.</span>
             </p>
-          </div>
-          <form action="" data-bind="attr: {action: infoId}, visible: infoId">
-        <input class="visit" type="submit" data-bind="value: infoVisit4">
-        </form>
-      </div> <!-- infoTip -->
-    </div> <!-- container -->
-  </div> <!--infowindow -->
+        </div>
 
-  <!-- Google Maps JS -->
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
+        <div id="list">
+            <ul data-bind="foreach: $root.filteredItems">
+                <li class="marker" data-bind="click: $root.goToLocation">
+                    <img src="" alt="icon" data-bind="attr: {src: icon}">
+                    <span class="title" data-bind="text: title"></span>
+                </li>
+            </ul>
+            <ul data-bind="visible: needReset">
+              <li class="marker title" data-bind="click: $root.clearSearch">Your search had no results.<br> Try again or click here to show the most popular results for Old Town</li>
+            </ul>
+        </div>
 
-  <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <div class="fineprint">
+            <h6>This service uses the Foursquare&reg; application programming interface but is not endorsed or certified by Foursquare Labs, Inc. All of the Foursquare&reg; logos (including all badges) and trademarks displayed on this [application/service] are the property of Foursquare Labs, Inc.</h6>
+        </div>
+    </div>
 
-  <!-- Knockout JS -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <div id="helpWindow" data-bind="visible: $root.helpView">
+        <div class="infoHeader">
+            <span data-bind="click: toggleHelp" class="close">x close</span>
+            <h4>How to Use this Service</h4>
+        </div>
+        <div class="helpInfo">
+            <p>Exploring Old Town has never been easier. We've chosen fifty of the most popular venues in the neighborhood to get your started. We've provided three ways to find the perfect Old Town activity for you and whomever else tags along.</p>
+            <h2>Browse List View</h2>
+            <ul>
+                <li>Foursquare has provided the fifty most popular venues for you to explore.</li>
+                <li>Filter the results by typing in the search box without pressing enter.
+                    <ul>
+                        <li>Filter by venue name, category (coffee shop, electronics store, etc.), address, phone number, tips from the Foursquare users, and even Twitter user names.</li>
+                    </ul>
+                </li>
+                <li>Scroll through the list to find something you're interested in.</li>
+                <li>Tap or click any venue to see it on the map and get more information.</li>
+                <li>Close the information window and tap "List View" at the top of the screen to return to the List View screen and find more venues</li>
+            </ul>
+            <h2>Explore Map View</h2>
+            <ul>
+                <li>If you would rather find something nearby, use Map View</li>
+                <li>Tap "Map View" near the top of the screen to see the exact locations of the venues listed in List View.</li>
+                <li>The icons indicate what type of venue is at a location.</li>
+                <li>Tap the icons to learn about the venue.</li>
+                <li>You can close the window by clicking "close" or by clicking the map outside the window.</li>
+            </ul>
+            <h2>Search for More</h2>
+            <ul>
+                <li>Instead of filtering in list view, you can also perform a new search</li>
+                <li>Just type in your query and press enter.</li>
+                <li>A new list will appear, and new markers with populate the map for you to filter and explore.</li>
+            </ul>
+            <h2>Have fun exploring Old Town Pasadena.</h2>
+            <p>
+                <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                    <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!" />
+                </a>
+            </p>
+        </div>
+    </div>
 
-  <!-- Custom JS, including Map Initialization -->
-  <script type="text/javascript" src="js/main.js"></script>
+    <div id="infowindow" data-bind="visible: infoView">
+        <img id="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}" alt="Foursquare User Photo of the Venue">
+        <div class="infoHeader">
+            <span data-bind="click: infoClose" class="close">x close</span>
+            <h4 data-bind="text: infoTitle"></h4>
+        </div>
+        <div class="container">
+            <div id="infoContact" class="info">
+                <h5>Contact:</h5>
+                <a class="tweet" href="" data-bind="visible: infoTweet, attr: {href:infoTwitterURL}, text: infoTwitter"></a>
+                <p data-bind="visible: infoPhone">
+                    <span data-bind="text: infoPhone"></span>
+                </p>
+                <p data-bind="visible: infoAddress1">
+                    <span data-bind="text: infoAddress1"></span>
+                    <br>
+                    <span data-bind="text: infoAddress2"></span>
+                    <br>
+                    <span data-bind="text: infoAddress3"></span>
+                </p>
+            </div>
+            <div id="infoTip" data-bind="visible: tipText" class="info">
+                <h5>Top Tip:</h5>
+                <div class="tip">
+                    <p>
+                        <img class="tipImg" src="" data-bind="attr: {src: tipPhoto}" alt="User Avatar">
+                        <span data-bind="text: tipName"></span> says:
+                    </p>
+                    <p class="tipContent" data-bind="text: tipText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+                <a class="visit more" data-bind="visible: infoURL, attr: {href: infoURL}">Visit Website</a>
+                <a class="visit more" data-bind="visible: infoId, attr: {href: infoId}">Visit on Foursquare&reg;</a>
+        </div>
+    </div>
+
+    <!-- Google Maps JS -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- List JS -->
+    <script type="text/javascript" src="js/libraries/list.js"></script>
+
+    <!-- Knockout JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+
+    <!-- Custom JS, including Map Initialization -->
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 
 </html>
