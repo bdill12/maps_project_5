@@ -7,7 +7,13 @@
 
     <title>Explore Old Town Pasadena</title>
 
-    <!--Sanitize CSS, Google Fonts, Custom CSS, Google Maps JS -->
+    <!--Sanitize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Balthazar">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Google Maps JS -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
 </head>
 
@@ -17,14 +23,14 @@
         <h2 data-bind="visible: $root.hide">Map View</h2>
         <h2 data-bind="visible: $root.show">List View</h2>
     </div>
-    <div id="map-canvas"></div>
+    <div id="map-canvas" class="map-canvas"></div>
     <div class="control" data-bind="visible: $root.searchView">
         <div class="header">
             <span class="help" data-bind="click: $root.toggleHelp">help</span>
             <h3>Old Town Pasadena</h3>
         </div>
         <div class="search">
-            <input id="searchInput" data-bind="event: {keyup: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
+            <input id="searchInput" class="searchInput" data-bind="event: {keyup: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
             <input class="button" type="submit" value="Search" data-bind="click: $root.foursquareSearch">
         </div>
 
@@ -36,7 +42,7 @@
             </p>
         </div>
 
-        <div id="list">
+        <div id="list" class="list">
             <ul data-bind="foreach: $root.filteredItems">
                 <li class="marker" data-bind="click: $root.goToLocation">
                     <img src="" alt="icon" data-bind="attr: {src: icon}">
@@ -53,7 +59,7 @@
         </div>
     </div>
 
-    <div id="helpWindow" data-bind="visible: $root.helpView">
+    <div id="helpWindow" class="helpWindow" data-bind="visible: $root.helpView">
         <div class="infoHeader">
             <span data-bind="click: toggleHelp" class="close">x close</span>
             <h4>How to Use this Service</h4>
@@ -95,14 +101,14 @@
         </div>
     </div>
 
-    <div id="infowindow" data-bind="visible: infoView">
-        <img id="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}" alt="Foursquare User Photo of the Venue">
+    <div id="infowindow" class="infowindow" data-bind="visible: infoView">
+        <img id="infoImg" class="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}" alt="Foursquare User Photo of the Venue">
         <div class="infoHeader">
             <span data-bind="click: infoClose" class="close">x close</span>
             <h4 data-bind="text: infoTitle"></h4>
         </div>
         <div class="container">
-            <div id="infoContact" class="info">
+            <div id="infoContact" class="infoContact info">
                 <h5>Contact:</h5>
                 <a class="tweet" href="" data-bind="visible: infoTweet, attr: {href:infoTwitterURL}, text: infoTwitter"></a>
                 <p data-bind="visible: infoPhone">
@@ -116,7 +122,7 @@
                     <span data-bind="text: infoAddress3"></span>
                 </p>
             </div>
-            <div id="infoTip" data-bind="visible: tipText" class="info">
+            <div id="infoTip" class="infoTip" data-bind="visible: tipText" class="info">
                 <h5>Top Tip:</h5>
                 <div class="tip">
                     <p>
@@ -132,6 +138,13 @@
                 <a class="visit more" data-bind="visible: infoId, attr: {href: infoId}">Visit on Foursquare&reg;</a>
         </div>
     </div>
+    <div class="info" id="error" data-bind="visible: showError">
+        <div class="infoHeader">
+            <h4>An error has occurred.
+            <p>An error occurred while retrieving information from Foursquare&reg;.</p>
+            <p>Please try again later.</p></h4>
+        </div>
+    </div>
     <!-- jQuery -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
 
@@ -139,7 +152,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js" async></script>
 
     <!-- Custom JS, including Map Initialization -->
-    <script type="text/javascript" src="js/app.js" async></script>-->
+    <script type="text/javascript" src="js/app.js" async></script>
 </body>
 
 </html>

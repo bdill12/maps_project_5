@@ -26,6 +26,7 @@ function createMarkers() {
         self.helpView = ko.observable(false);
         self.infoView = ko.observable(false);
         self.needReset = ko.observable(false);
+        self.showError = ko.observable(false);
 
         self.infoTitle = ko.observable();
         self.infoId = ko.observable();
@@ -176,7 +177,7 @@ function createMarkers() {
 
         };
 
-        // Filter Venues 
+        // Filter Venues
         self.filteredItems = ko.computed(function() {
             var filter = self.searchQuery().toLowerCase();
             if (!filter) {
@@ -193,8 +194,6 @@ function createMarkers() {
             }
 
         });
-
-
 
         // Reset to Original Venues
         self.clearSearch = function() {
@@ -220,11 +219,25 @@ function createMarkers() {
                 '&client_secret=' + Model.clientSecret + '&v=20130815&ll=' + Model.latitude +
                 ',' + Model.longitude + '&radius=' + Model.radius + '&limit=' + Model.limit +
                 '&venuePhotos=1' + "&query='" + self.searchQuery() + "'";
-            $.getJSON(foursquareURL, function(response) {
-                self.parseResults(response);
-                self.filteredItems();
-                self.showApology();
-                });
+            $.ajax({
+                url: foursquareURL,
+                error: function() {
+                    self.showError(true);
+                    self.searchView(false);
+                    self.show(false);
+                    self.hide(false);
+                    self.apology(false);
+                    self.helpView(false);
+                    self.infoView(false);
+                    self.needReset(false);
+                },
+                success: function(response) {
+                    self.parseResults(response);
+                    self.filteredItems();
+                    self.showApology();
+                },
+                type: 'GET'
+            });
         };
 
         // Close Info Window if user clicks outside it
@@ -250,7 +263,7 @@ function createMarkers() {
                 self.searchQuery("");
             } else if (event.which === 8 || event.which === 46) {
                 self.showApology();
-            } 
+            }
             self.showApology();
             return true;
         };
@@ -263,19 +276,6 @@ function createMarkers() {
 //Initialize
 $(function initialize(){
     'use strict';
-    //Load CSS
-    var cssLinks = ["https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css",
-    "http://fonts.googleapis.com/css?family=Raleway|Merriweather+Sans&effect=wallpaper",
-    "css/main.css"];
-    var ref = document.getElementsByTagName('script')[0];
-    for (var z = 0; z < cssLinks.length; z++) {
-        var ss = "ss" + z;
-        ss = document.createElement('link');
-        ss.rel = "stylesheet";
-        ss.href = cssLinks[z];
-        ss.media = "all";
-        ref.parentNode.insertBefore(ss, ref);
-    }
 
     var oldTownPasadena = new google.maps.LatLng(34.145815, -118.150425);
 
@@ -349,6 +349,6 @@ $(function initialize(){
     // Apply Styles
     map.setOptions({styles: styleArray});
 
-    // 
+    //
     createMarkers();
 });
