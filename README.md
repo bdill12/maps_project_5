@@ -11,14 +11,12 @@ JQuery: https://jquery.com/
 
 CSS:
 Sanitize CSS: http://jonathantneal.github.io/sanitize.css/
-Font Awesome Icons: http://fortawesome.github.io/Font-Awesome/icons/
 
 
-Google Maps API: https://developers.google.com/maps/documentation/ and reference: https://developers.google.com/maps/documentation/javascript/reference
-Google Maps Streetview: https://developers.google.com/maps/documentation/javascript/streetview
+Google Maps API: 
+	https://developers.google.com/maps/documentation/ 
+and reference: 
+	https://developers.google.com/maps/documentation/javascript/reference
 
-Maps Icons Collection https://mapicons.mapsmarker.com
-
-
-
-Yelp API: https://www.yelp.com/developers/documentation
+Foursquare API:
+	https://developer.foursquare.com/

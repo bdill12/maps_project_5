@@ -7,30 +7,24 @@
 
     <title>Explore Old Town Pasadena</title>
 
-    <!-- Sanitize CSS, a reset to noramlize browser behavior -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
-    <!-- Google Fonts Raleway and Merriweather Sans -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway|Merriweather+Sans">
-    <!-- Custom CSS-->
-    <link rel="stylesheet" href="css/main.css">
+    <!--Sanitize CSS, Google Fonts, Custom CSS, Google Maps JS -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
 </head>
 
 <body>
     <h1>Explore Popular Spots on Foursquare in Old Town Pasadena, California</h1>
-    <div class="toggleSearch show" data-bind="click: $root.toggleSearch, visible: $root.show">
-        <h2>List View</h2>
+    <div class="toggleSearch" data-bind="click: $root.toggleSearch">
+        <h2 data-bind="visible: $root.hide">Map View</h2>
+        <h2 data-bind="visible: $root.show">List View</h2>
     </div>
     <div id="map-canvas"></div>
-    <div class="control" data-bind="visible: $root.search">
+    <div class="control" data-bind="visible: $root.searchView">
         <div class="header">
             <span class="help" data-bind="click: $root.toggleHelp">help</span>
-            <div class="toggleSearch" data-bind="click: $root.toggleSearch, visible: $root.hide">
-                <h2>Map View</h2>
-            </div>
             <h3>Old Town Pasadena</h3>
         </div>
         <div class="search">
-            <input id="searchInput" data-bind="event: {keydown: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
+            <input id="searchInput" data-bind="event: {keyup: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
             <input class="button" type="submit" value="Search" data-bind="click: $root.foursquareSearch">
         </div>
 
@@ -138,21 +132,14 @@
                 <a class="visit more" data-bind="visible: infoId, attr: {href: infoId}">Visit on Foursquare&reg;</a>
         </div>
     </div>
-
-    <!-- Google Maps JS -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places?key=AIzaSyACTYT5EELEwp_-2m5XuzSl2lAzPpJNQ5k"></script>
-
     <!-- jQuery -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-    <!-- List JS -->
-    <script type="text/javascript" src="js/libraries/list.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
 
     <!-- Knockout JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js" async></script>
 
     <!-- Custom JS, including Map Initialization -->
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/app.js" async></script>-->
 </body>
 
 </html>
