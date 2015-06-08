@@ -2,15 +2,19 @@
 <html>
 
 <head>
-    <meta charset="utc-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=no">
 
-    <title>Explore Old Town Pasadena</title>
+    <title>Warner Brothers Studio Tour Hollywood</title>
 
     <!--Sanitize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css">
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Balthazar">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway">
+    <!--Reset -->
+    <link rel="stylesheet" href="css/mega-dropdown/css/reset.css">
+    <!--mega-dropdown-->
+    <link rel="stylesheet" href="css/mega-dropdown/css/style.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/main.css">
     <!-- Google Maps JS -->
@@ -18,139 +22,55 @@
 </head>
 
 <body>
-    <h1>Explore Popular Spots on Foursquare in Old Town Pasadena, California</h1>
-    <div class="toggleSearch" data-bind="click: $root.toggleSearch">
-        <h2 data-bind="visible: $root.hide">Map View</h2>
-        <h2 data-bind="visible: $root.show">List View</h2>
-    </div>
-    <div id="map-canvas" class="map-canvas"></div>
-    <div class="control" data-bind="visible: $root.searchView">
-        <div class="header">
-            <span class="help" data-bind="click: $root.toggleHelp">help</span>
-            <h3>Old Town Pasadena</h3>
-        </div>
-        <div class="search">
-            <input id="searchInput" class="searchInput" data-bind="event: {keyup: $root.ifEnter}, value: $root.searchQuery, valueUpdate: 'afterkeyup'" autocomplete="off" type="text" placeholder="Filter Results or Search">
-            <input class="button" type="submit" value="Search" data-bind="click: $root.foursquareSearch">
-        </div>
-
-        <div class="container searchFor" data-bind="visible: $root.searchQuery">
-            <img src="https://playfoursquare.s3.amazonaws.com/press/2014/foursquare-logomark.png" alt="foursquare logo">
-            <p>Search for: <span data-bind="text: searchQuery"></span>
-                <br>
-                <span data-bind="visible: $root.apology">No matching results. Press return to search instead.</span>
-            </p>
-        </div>
-
-        <div id="list" class="list">
-            <ul data-bind="foreach: $root.filteredItems">
-                <li class="marker" data-bind="click: $root.goToLocation">
-                    <img src="" alt="icon" data-bind="attr: {src: icon}">
-                    <span class="title" data-bind="text: title"></span>
-                </li>
-            </ul>
-            <ul data-bind="visible: needReset">
-              <li class="marker title" data-bind="click: $root.clearSearch">Your search had no results.<br> Try again or click here to show the most popular results for Old Town</li>
-            </ul>
-        </div>
-
-        <div class="fineprint">
-            <h6>This service uses the Foursquare&reg; application programming interface but is not endorsed or certified by Foursquare Labs, Inc. All of the Foursquare&reg; logos (including all badges) and trademarks displayed on this [application/service] are the property of Foursquare Labs, Inc.</h6>
-        </div>
-    </div>
-
-    <div id="helpWindow" class="helpWindow" data-bind="visible: $root.helpView">
-        <div class="infoHeader">
-            <span data-bind="click: toggleHelp" class="close">x close</span>
-            <h4>How to Use this Service</h4>
-        </div>
-        <div class="helpInfo">
-            <p>Exploring Old Town has never been easier. We've chosen fifty of the most popular venues in the neighborhood to get your started. We've provided three ways to find the perfect Old Town activity for you and whomever else tags along.</p>
-            <h2>Browse List View</h2>
+    <h1>Use these lists to show map markers about Friends, Gilmore Girls, or Pretty Little Liars on the WB Tour</h1>
+        <img src="http://www.wbstudiotour.com/sites/all/themes/wb_hollywood/logo.svg">
+        <nav>
             <ul>
-                <li>Foursquare has provided the fifty most popular venues for you to explore.</li>
-                <li>Filter the results by typing in the search box without pressing enter.
-                    <ul>
-                        <li>Filter by venue name, category (coffee shop, electronics store, etc.), address, phone number, tips from the Foursquare users, and even Twitter user names.</li>
+                <li>Projects
+                    <ul class="sub-menu">
+                        <li data-bind="click: gotoFriends">Friends</li>
+                        <li data-bind="click: gotoGilmore">Gilmore Girls</li>
+                        <li data-bind="click: gotoLiars">Pretty Little Liars</li>
+                        <li data-bind="click: gotoBang">The Big Bang Theory</li>
                     </ul>
                 </li>
-                <li>Scroll through the list to find something you're interested in.</li>
-                <li>Tap or click any venue to see it on the map and get more information.</li>
-                <li>Close the information window and tap "List View" at the top of the screen to return to the List View screen and find more venues</li>
+                <!--<li>Areas
+                <ul>
+                    <li>New York
+                        <ul>
+                            <li>Hennesy Street</li>
+                            <li>Tennement Alley</li>
+                            <li>New York Street</li>
+                            <li>Embassy Courtyard</li>
+                            <li>Park Place</li>
+                        </ul>
+                    </li>
+                    <li>Chicago</li>
+                    <li>Midwest St.
+                        <ul>
+                            <li data-bind="click: gotoKings">King's Row</li>
+                            <li data-bind="click: gotoFrench">French Street</li>
+                            <li data-bind="click: gotoMidwest">Midwest St. Square</li>
+                        </ul>
+                    </li>
+                    <li data-bind="click: gotoJungle">The Jungle</li>
+                    <li data-bind="click: gotoWarner">Warner Village</li>
+                    <li data-bind="click: gotoStudios">Studios</li>
+                </ul>
+            </li>-->
+                <li data-bind="click: gotoBathroom">Facilities
+                </li>
             </ul>
-            <h2>Explore Map View</h2>
-            <ul>
-                <li>If you would rather find something nearby, use Map View</li>
-                <li>Tap "Map View" near the top of the screen to see the exact locations of the venues listed in List View.</li>
-                <li>The icons indicate what type of venue is at a location.</li>
-                <li>Tap the icons to learn about the venue.</li>
-                <li>You can close the window by clicking "close" or by clicking the map outside the window.</li>
-            </ul>
-            <h2>Search for More</h2>
-            <ul>
-                <li>Instead of filtering in list view, you can also perform a new search</li>
-                <li>Just type in your query and press enter.</li>
-                <li>A new list will appear, and new markers with populate the map for you to filter and explore.</li>
-            </ul>
-            <h2>Have fun exploring Old Town Pasadena.</h2>
-            <p>
-                <a href="http://jigsaw.w3.org/css-validator/check/referer">
-                    <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!" />
-                </a>
-            </p>
+        </nav>
         </div>
-    </div>
-
-    <div id="infowindow" class="infowindow" data-bind="visible: infoView">
-        <img id="infoImg" class="infoImg" src="" data-bind="visible: infoPhoto, attr: {src: infoPhoto}" alt="Foursquare User Photo of the Venue">
-        <div class="infoHeader">
-            <span data-bind="click: infoClose" class="close">x close</span>
-            <h4 data-bind="text: infoTitle"></h4>
-        </div>
-        <div class="container">
-            <div id="infoContact" class="infoContact info">
-                <h5>Contact:</h5>
-                <a class="tweet" href="" data-bind="visible: infoTweet, attr: {href:infoTwitterURL}, text: infoTwitter"></a>
-                <p data-bind="visible: infoPhone">
-                    <span data-bind="text: infoPhone"></span>
-                </p>
-                <p data-bind="visible: infoAddress1">
-                    <span data-bind="text: infoAddress1"></span>
-                    <br>
-                    <span data-bind="text: infoAddress2"></span>
-                    <br>
-                    <span data-bind="text: infoAddress3"></span>
-                </p>
-            </div>
-            <div id="infoTip" class="infoTip" data-bind="visible: tipText" class="info">
-                <h5>Top Tip:</h5>
-                <div class="tip">
-                    <p>
-                        <img class="tipImg" src="" data-bind="attr: {src: tipPhoto}" alt="User Avatar">
-                        <span data-bind="text: tipName"></span> says:
-                    </p>
-                    <p class="tipContent" data-bind="text: tipText"></p>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-                <a class="visit more" data-bind="visible: infoURL, attr: {href: infoURL}">Visit Website</a>
-                <a class="visit more" data-bind="visible: infoId, attr: {href: infoId}">Visit on Foursquare&reg;</a>
-        </div>
-    </div>
-    <div class="info" id="error" data-bind="visible: showError">
-        <div class="infoHeader">
-            <h4>An error has occurred.
-            <p>An error occurred while retrieving information from Foursquare&reg;.</p>
-            <p>Please try again later.</p></h4>
-        </div>
-    </div>
+        <h2>Choose a show to see points of interest. Locations coming soon.</h2>
+    <div id="map-canvas" class="map-canvas"></div>
     <!-- jQuery -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" async></script>
-
     <!-- Knockout JS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js" async></script>
-
+    <!-- Offline JS -->
+    <script src="http://fast.eager.io/WEARbsIJVT.js"></script>
     <!-- Custom JS, including Map Initialization -->
     <script type="text/javascript" src="js/app.js" async></script>
 </body>
