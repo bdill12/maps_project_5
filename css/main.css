@@ -11,19 +11,24 @@ body,
     background-color: #000;
 }
 
+.header {
+    width: 15%;
+    margin: 1% auto;
+}
+
 h1 {
     display: none;
 }
 
 img {
-    width: 15%;
-    margin: 1% auto;
+    margin: 2% auto;
 }
 
 /* Giving a background-color to the nav container. */
 nav {
-    margin: 100px 0;
-    background-color: #E64A19;
+    margin: 0;
+    background-color: #791214;
+    font-family: "Raleway", sans-serif;
 }
 
 /* Since we'll have the "ul li" "float:left"
@@ -42,6 +47,8 @@ nav ul {
     margin:0;
     list-style: none;
     position: relative;
+    border-radius: 10px;
+    font-family: "Raleway", sans-serif;
     }
 
 /* Positioning the navigation items inline */
@@ -50,9 +57,10 @@ nav ul li {
     display:inline-block;
     float: left;
     background-color: #791214;
-    font-size: 1.5em;
+    font-size: 1em;
     padding:1%;
-    z-index: 100;
+    z-index: 2;
+    font-family: "Raleway", sans-serif;
     }
 
 /* Styling the links */
@@ -63,6 +71,7 @@ nav a {
     font-size:20px;
     line-height: 60px;
     text-decoration:none;
+    font-family: "Raleway", sans-serif;
 }
 
 /* Background color change on Hover */
@@ -89,4 +98,25 @@ nav ul ul li {
     float:none;
     display:list-item;
     position: relative;
+}
+
+nav ul ul li:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+input[type="text"] {
+    width: 35%;
+    margin: 1% 2% 0 0;
+    float: right;
+    color: #000;
+}
+
+input[type="submit"] {
+      float: right;
+  margin: 1%;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+  font-family: 'Raleway', serif;
 }
