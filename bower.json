@@ -1,0 +1,25 @@
+{
+  "name": "toursWB",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bdill12/maps_project_5",
+  "authors": [
+    "Brent Dill <bdill12@gmail.com>"
+  ],
+  "description": "none",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "map-tools": "~2.0.0",
+    "jquery": "~2.1.4",
+    "knockout": "~3.3.0",
+    "google-map": "GoogleWebComponents/google-map#~1.0.0",
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

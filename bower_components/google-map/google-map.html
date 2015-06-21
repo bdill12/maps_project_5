@@ -1,0 +1,964 @@
+<!-- Copyright (c) 2015 Google Inc. All rights reserved. -->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-apis/google-maps-api.html">
+<link rel="import" href="google-map-marker.html">
+<!--
+The `google-map` element renders a Google Map.
+
+<b>Example</b>:
+
+    <style>
+      google-map {
+        height: 600px;
+      }
+    </style>
+    <google-map latitude="37.77493" longitude="-122.41942"></google-map>
+
+<b>Example</b> - add markers to the map and ensure they're in view:
+
+    <google-map latitude="37.77493" longitude="-122.41942" fit-to-markers>
+      <google-map-marker latitude="37.779" longitude="-122.3892"
+          draggable="true" title="Go Giants!"></google-map-marker>
+      <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker>
+    </google-map>
+
+<b>Example</b>:
+
+    <google-map disable-default-ui show-center-marker zoom="15"></google-map>
+    <script>
+      var map = document.querySelector('google-map');
+      map.latitude = 37.77493;
+      map.longitude = -122.41942;
+      map.addEventListener('google-map-ready', function(e) {
+        alert('Map loaded!');
+      });
+    </script>
+
+<b>Example</b> - with Google directions, using data-binding inside another Polymer element
+
+    <google-map map="{{map}}"></google-map>
+    <google-map-directions map="{{map}}"
+        start-address="San Francisco" end-address="Mountain View">
+    </google-map-directions>
+
+-->
+
+<dom-module id="google-map">
+
+  <style>
+    :host {
+      position: relative;
+      display: block;
+      height: 100%;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+  </style>
+  <template>
+    <google-maps-api
+      api-key="[[apiKey]]"
+      client-id="[[clientId]]"
+      version="[[version]]"
+      libraries="[[libraries]]"
+      signed-in="[[signedIn]]"
+      language="[[language]]"
+      on-api-load="_mapApiLoaded"></google-maps-api>
+
+    <div id="map"></div>
+
+    <content id="markers" select="google-map-marker"></content>
+
+  </template>
+</dom-module>
+
+<script>
+var pointOfInterest = [{
+    "poiName": "Gellar House",
+    "poiLat": 34.148306,
+    "poiLng": 118.335980,
+    "poiDesc": "Rachel and Monica get ready for the prom at Jack and Judy's house. This episode was voted the best episode leading up to the finale in 2004.",
+    "poiSearch": "Friends Midwest street KingsRow Sitcom"
+}, {
+    "poiName": "Walk to the Hockey Game",
+    "poiLat": 34.150414,
+    "poiLng": -118.33694,
+    "poiDesc": "The guys walk to a hockey game, but Ross sees a peach pit on the sidewalk and remembers his first lesbian ex-wife",
+    "poiSearch": "Friends Hennesy street Sitcom"
+}, {
+    "poiName": "$1000 and a Football Phone",
+    "poiLat": 34.150767,
+    "poiLng": -118.33702,
+    "poiDesc": "Phoebe's bank accidentally gives her extra money that she wants to get rid of. She gives it to a homeless woman on Hennesy street street.",
+    "poiSearch": "Friends Hennesy street Sitcom"
+}, {
+    "poiName": "Phoebe Runs Weird",
+    "poiLat": 34.148936,
+    "poiLng": -118.33724,
+    "poiDesc": "Rachel is embarassed by Phoebe's crazy style of running.",
+    "poiSearch": "Friends new york street Embassy court ct Sitcom"
+}, {
+    "poiName": "Red Ross",
+    "poiLat": 34.149041,
+    "poiLng": -118.33690,
+    "poiDesc": "Ross plays rugby to impress his new British girlfriend.",
+    "poiSearch": "Friends French street Sitcom"
+}, {
+    "poiName": "Chandler Chases Kathy",
+    "poiLat": 34.150562,
+    "poiLng": -118.33692,
+    "poiDesc": "Chandler has a crush on Joey's girlfriend, who he chases down the street when she doesn't hear him say hello.",
+    "poiSearch": "Friends Hennesy street Sitcom"
+}, {
+    "poiName": "Ross gets Waterballooned",
+    "poiLat": 34.149554,
+    "poiLng": -118.33794,
+    "poiDesc": "Ross breaks up with his much younger girlfriend, Elizabeth. He is reconsidering when she starts throwing water balloons at him from her dorm room window.",
+    "poiSearch": "Friends new york street Sitcom"
+}, {
+    "poiName": "Stage 24",
+    "poiLat": 34.148928,
+    "poiLng": -118.33808,
+    "poiDesc": "The Friends Stage",
+    "poiSearch": "Friends front lot Sitcom"
+}, {
+    "poiName": "Gilmore House",
+    "poiLat": 34.148066,
+    "poiLng": -118.33596,
+    "poiDesc": "Home of Lorelei and Rory Gilmore",
+    "poiSearch": "gilmore girls kingsrow midw Drama"
+}, {
+    "poiName": "Stars Hollow High",
+    "poiLat": 34.148492,
+    "poiLng": -118.33665,
+    "poiDesc": "School Rory attends for an episode or two.",
+    "poiSearch": "gilmore girls midwest street Drama"
+}, {
+    "poiName": "Gazebo",
+    "poiLat": 34.148628,
+    "poiLng": -118.33621,
+    "poiDesc": "Iconic landmark from the show.",
+    "poiSearch": "gilmore girls midwest street Drama"
+}, {
+    "poiName": "Weston's Bakery",
+    "poiLat": 34.148453,
+    "poiLng": -118.33693,
+    "poiDesc": "Town bakery",
+    "poiSearch": "gilmore girls french street Drama"
+}, {
+    "poiName": "Miss Patty's",
+    "poiLat": 34.148880,
+    "poiLng": -118.33696,
+    "poiDesc": "Rory and Jess fall asleep together here and stay out all night.",
+    "poiSearch": "gilmore girls french street Drama"
+}, {
+    "poiName": "Luke's Diner",
+    "poiLat": 34.149016,
+    "poiLng": -118.33662,
+    "poiDesc": "Coffee, please.",
+    "poiSearch": "gilmore girls midwest street Drama"
+}, {
+    "poiName": "Rory gets hit by a deer",
+    "poiLat": 34.149421,
+    "poiLng": -118.33411,
+    "poiDesc": "No. She was hit. Not she hit.",
+    "poiSearch": "gilmore girls jungle Drama"
+}, {
+    "poiName": "Doose's Market",
+    "poiLat": 34.148942,
+    "poiLng": -118.33626,
+    "poiDesc": "There's a good aisle inside.",
+    "poiSearch": "gilmore girls midwest street Drama"
+}, {
+    "poiName": "Hewes bros service station",
+    "poiLat": 34.148375,
+    "poiLng": -118.33572,
+    "poiDesc": "Car trouble?",
+    "poiSearch": "gilmore girls midwest street Drama"
+}, {
+    "poiName": "Bangles concert",
+    "poiLat": 34.149712,
+    "poiLng": -118.33839,
+    "poiDesc": "The Chilton girls abandon the concert and Lorelei has to go kick some ass.",
+    "poiSearch": "gilmore girls new york brownstone street Drama"
+}, {
+    "poiName": "Luke shoves Jess in the lake",
+    "poiLat": 34.149515,
+    "poiLng": -118.33419,
+    "poiDesc": "Exactly like it says.",
+    "poiSearch": "gilmore girls jungle Drama"
+}, {
+    "poiName": "Chilton Gates",
+    "poiLat": 34.149189,
+    "poiLng": -118.33742,
+    "poiDesc": "Also the museum where Emily goes on a date",
+    "poiSearch": "gilmore girls new york street embassy court ct Drama"
+}, {
+    "poiName": "Rory's Study Tree",
+    "poiLat": 34.149074,
+    "poiLng": -118.33717,
+    "poiDesc": "Peace and quiet at Yale",
+    "poiSearch": "gilmore girls new york street embassy court ct Drama"
+}, {
+    "poiName": "Spencer's House",
+    "poiLat": 34.148066,
+    "poiLng": -118.33596,
+    "poiDesc": "Home of Spencer Hastings, site of murders galore.",
+    "poiSearch": "pretty little liars midwest street kingsrow Drama"
+}, {
+    "poiName": "Rosewood High",
+    "poiLat": 34.148492,
+    "poiLng": -118.33665,
+    "poiDesc": "Sit outside and stare as Mona walks in.",
+    "poiSearch": "pretty little liars midwest street Drama"
+}, {
+    "poiName": "Apple Rose Grill",
+    "poiLat": 34.149016,
+    "poiLng": -118.33662,
+    "poiDesc": "Hungry?",
+    "poiSearch": "pretty little liars midwest street Drama"
+}, {
+    "poiName": "Hanna gets hit by a car",
+    "poiLat": 34.149421,
+    "poiLng": -118.33411,
+    "poiDesc": "And 1000 other things. They are in these woods a lot.",
+    "poiSearch": "pretty little liars jungle Drama"
+}, {
+    "poiName": "The Greenhouse Meeting with A",
+    "poiLat": 34.149515,
+    "poiLng": -118.33419,
+    "poiDesc": "The girls trick A into meeting with them and they end up getting his/her cell phone.",
+    "poiSearch": "pretty little liars jungle Drama"
+}, {
+    "poiName": "Radley Mental Institution",
+    "poiLat": 34.149189,
+    "poiLng": -118.33742,
+    "poiDesc": "The exterior of the mental institution that continually crops up in the main story.",
+    "poiSearch": "pretty little liars new york street embassy court ct Drama"
+}, {
+    "poiName": "Emily's House",
+    "poiLat": 34.148306,
+    "poiLng": -118.33598,
+    "poiDesc": "Home of Emily Fields",
+    "poiSearch": "pretty little liars midwest street kingsrow Drama"
+}, {
+    "poiName": "Rear Window Brew",
+    "poiLat": 34.149088,
+    "poiLng": -118.33619,
+    "poiDesc": "Ezra owns it. Emily works there.",
+    "poiSearch": "pretty little liars midwest street Drama"
+}, {
+    "poiName": "Church",
+    "poiLat": 34.148562,
+    "poiLng": -118.33585,
+    "poiDesc": "Finale of season 1 (exterior). Interior was shot inside the fire station across the square.",
+    "poiSearch": "pretty little liars midwest street Drama"
+}, {
+    "poiName": "Police Station/City Hall",
+    "poiLat": 34.148694,
+    "poiLng": -118.33655,
+    "poiDesc": "When are they not here?",
+    "poiSearch": "pretty little liars midwest street Drama"
+}, {
+    "poiName": "Abandoned house from season 2",
+    "poiLat": 34.148289,
+    "poiLng": -118.33644,
+    "poiDesc": "Ali takes them in to scare them",
+    "poiSearch": "pretty little liars midwest street kingsrow Drama"
+}, {
+    "poiName": "Aria's porch",
+    "poiLat": 34.148000,
+    "poiLng": -118.33645,
+    "poiDesc": "The rest of the house is in Canada",
+    "poiSearch": "pretty little liars midwest street kingsrow Drama"
+}, {
+    "poiName": "Hanna's House",
+    "poiLat": 34.148385,
+    "poiLng": -118.33333,
+    "poiDesc": "She lives far away from anyone else",
+    "poiSearch": "pretty little liars warnervillage Drama"
+}, {
+    "poiName": "Dilaurentis's House",
+    "poiLat": 34.149385,
+    "poiLng": -118.33373,
+    "poiDesc": "Built for this production",
+    "poiSearch": "pretty little liars jungle Drama"
+}, {
+    "poiName": "Ezra's Cabin",
+    "poiLat": 34.149892,
+    "poiLng": -118.33401,
+    "poiDesc": "A convenient hideaway",
+    "poiSearch": "pretty little liars jungle Drama"
+}, {
+    "poiName": "Ally's Memorial / Grave",
+    "poiLat": 34.148887,
+    "poiLng": -118.33732,
+    "poiDesc": "Right across the street from Radley",
+    "poiSearch": "pretty little liars new york street embassy court ct Drama"
+}, {
+    "poiName": "Stage 6",
+    "poiLat": 34.147422,
+    "poiLng": -118.34078,
+    "poiDesc": "The soundstage",
+    "poiSearch": "pretty little liars front lot Drama"
+}, {
+    "poiName": "Stages 7 and 8",
+    "poiLat": 34.147100,
+    "poiLng": -118.34051,
+    "poiDesc": "More soundstages",
+    "poiSearch": "pretty little liars front lot Drama"
+}, {
+    "poiName": "Stage 25",
+    "poiLat": 34.148416,
+    "poiLng": -118.33785,
+    "poiDesc": "The soundstage",
+    "poiSearch": "big bang front lot sitcom"
+}, {
+    "poiName": "Raiding Raiders of the Lost Arc",
+    "poiLat": 34.149561,
+    "poiLng": -118.33753,
+    "poiDesc": "Sheldon and the gang stand in line to see the movie, but Sheldon ends up stealing the print and running away.",
+    "poiSearch": "big bang new york street sitcom"
+}, {
+    "poiName": "Apartment Exterior",
+    "poiLat": 34.148282,
+    "poiLng": -118.33695,
+    "poiDesc": "The outside of the apartment building",
+    "poiSearch": "big bang french street sitcom"
+}, {
+    "poiName": "Museum (water, restrooms)",
+    "poiLat": 34.150085,
+    "poiLng": -118.33877,
+    "poiSearch": "water restroom"
+}, {
+    "poiName": "Stage 9 (bathrooms and water)",
+    "poiLat": 34.147714,
+    "poiLng": -118.34037,
+    "poiSearch": "water restroom"
+}, {
+    "poiName": "Audience staging (water)",
+    "poiLat": 34.147538,
+    "poiLng": -118.33566,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Mill Store",
+    "poiLat": 34.147081,
+    "poiLng": -118.33918,
+    "poiSearch": "water restroom soda food"
+}, {
+    "poiName": "Stage 25 (soda machine and restrooms)",
+    "poiLat": 34.148210,
+    "poiLng": -118.33737,
+    "poiSearch": "water restroom soda"
+}, {
+    "poiName": "Parking/ Costumes (restrooms, soda on west side)",
+    "poiLat": 34.147790,
+    "poiLng": -118.33430,
+    "poiSearch": "water restroom soda"
+}, {
+    "poiName": "Commisary",
+    "poiLat": 34.149279,
+    "poiLng": -118.33922,
+    "poiSearch": "water restroom soda"
+}, {
+    "poiName": "Avon Grill",
+    "poiLat": 34.148892,
+    "poiLng": -118.33565,
+    "poiSearch": "water restroom soda food"
+}, {
+    "poiName": "Tan building (restroom)",
+    "poiLat": 34.149325,
+    "poiLng": -118.33433,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Restrooms near Dr. Ross end",
+    "poiLat": 34.150420,
+    "poiLng": -118.33638,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Post-Production (restrooms)",
+    "poiLat": 34.150277,
+    "poiLng": -118.33922,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Restrooms not for guests (Ellen's talent entrance)",
+    "poiLat": 34.148388,
+    "poiLng": -118.34173,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Restrooms at stage 21",
+    "poiLat": 34.147628,
+    "poiLng": -118.33852,
+    "poiSearch": "restroom"
+}, {
+    "poiName": "Bridge cafe",
+    "poiLat": 34.147937,
+    "poiLng": -118.33490,
+    "poiSearch": "water restroom soda food"
+}];
+
+var styleArray =  [{
+        featureType: "landscape",
+        elementType: "geometry.fill",
+        stylers: [{
+            color: "#7f8c8d"
+        }]
+    }, {
+        featureType: "poi",
+        elementType: "geometry",
+        stylers: [{
+            color: "#2c3e50"
+        }]
+
+    }, {
+        featureType: "poi.park",
+        elementType: "geometry",
+        stylers: [{
+            color: "#2ecc71"
+        }]
+    }, {
+        featureType: "road",
+        elementType: "geometry",
+        stylers: [{
+            color: "#791214"
+        }, {
+            saturation: -50
+        }]
+    }, {
+        featureType: "road",
+        elementType: "labels",
+        stylers: [{
+            visibility: "off"
+        }]
+    }, {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [{
+            visibility: "off"
+        }]
+    }];
+  Polymer({
+
+    is: 'google-map',
+
+
+    /**
+     * Fired when the Maps API has fully loaded.
+     * @event google-map-ready
+     */
+    /**
+     * Fired when the when the user clicks on the map (but not when they click on a marker, infowindow, or
+     * other object). Requires the clickEvents attribute to be true.
+     * @event google-map-click
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    /**
+     * Fired when the user double-clicks on the map. Note that the google-map-click event will also fire,
+     * right before this one. Requires the clickEvents attribute to be true.
+     * @event google-map-dblclick
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    /**
+     * Fired repeatedly while the user drags the map. Requires the dragEvents attribute to be true.
+     * @event google-map-drag
+     */
+    /**
+     * Fired when the user stops dragging the map. Requires the dragEvents attribute to be true.
+     * @event google-map-dragend
+     */
+    /**
+     * Fired when the user starts dragging the map. Requires the dragEvents attribute to be true.
+     * @event google-map-dragstart
+     */
+    /**
+     * Fired whenever the user's mouse moves over the map container. Requires the mouseEvents attribute to
+     * be true.
+     * @event google-map-mousemove
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    /**
+     * Fired when the user's mouse exits the map container. Requires the mouseEvents attribute to be true.
+     * @event google-map-mouseout
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    /**
+     * Fired when the user's mouse enters the map container. Requires the mouseEvents attribute to be true.
+     * @event google-map-mouseover
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    /**
+     * Fired when the DOM `contextmenu` event is fired on the map container. Requires the clickEvents
+     * attribute to be true.
+     * @event google-map-rightclick
+     * @param {google.maps.MouseEvent} event The mouse event.
+     */
+    properties: {
+      /**
+       * A Maps API key. To obtain an API key, see developers.google.com/maps/documentation/javascript/tutorial#api_key.
+       */
+      apiKey: String,
+
+      /**
+       * A Maps API for Business Client ID. To obtain a Maps API for Business Client ID, see developers.google.com/maps/documentation/business/.
+       * If set, a Client ID will take precedence over an API Key.
+       */
+      clientId: String,
+
+      /**
+       * A latitude to center the map on.
+       */
+      latitude: {
+        type: Number,
+        value: 34.148955,
+        notify: true,
+        reflectToAtrribute: true
+      },
+
+      /**
+       * A comma separated list (e.g. "places,geometry") of libraries to load
+       * with this map. Defaults to "places". For more information see
+       * https://developers.google.com/maps/documentation/javascript/libraries.
+       */
+      libraries: {
+        type: String,
+        value: 'places'
+      },
+
+      /**
+       * A longitude to center the map on.
+       */
+      longitude: {
+        type: Number,
+        value: -118.337912,
+        notify: true,
+        reflectToAtrribute: true
+      },
+
+      /**
+       * A zoom level to set the map to.
+       */
+      zoom: {
+        type: Number,
+        value: 17,
+        observer: '_zoomChanged'
+      },
+
+      /**
+       * When set, prevents the map from tilting (when the zoom level and viewport supports it).
+       */
+      noAutoTilt: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Map type to display. One of 'roadmap', 'satellite', 'hybrid', 'terrain'.
+       */
+      mapType: {
+        type: String,
+        value: 'roadmap', // roadmap, satellite, hybrid, terrain,
+        observer: '_mapTypeChanged'
+      },
+
+      /**
+       * Version of the Google Maps API to use.
+       */
+      version: {
+        type: String,
+        value: '3.exp'
+      },
+
+      /**
+       * If set, removes the map's default UI controls.
+       */
+      disableDefaultUi: {
+        type: Boolean,
+        value: false,
+        observer: '_disableDefaultUiChanged'
+      },
+
+      /**
+       * If set, the zoom level is set such that all markers (google-map-marker children) are brought into view.
+       */
+      fitToMarkers: {
+        type: Boolean,
+        value: false,
+        observer: '_fitToMarkersChanged'
+      },
+
+      /**
+       * If false, prevent the user from zooming the map interactively.
+       */
+      zoomable: {
+        type: Boolean,
+        value: true,
+        observer: '_zoomableChanged'
+      },
+
+      /**
+       * If set, custom styles can be applied to the map.
+       * For style documentation see developers.google.com/maps/documentation/javascript/reference#MapTypeStyle
+       */
+      styles: {
+        type: Object,
+        value: String
+      },
+
+      /**
+       * A maximum zoom level which will be displayed on the map.
+       */
+      maxZoom: {
+        type: Number,
+        observer: '_maxZoomChanged'
+      },
+
+      /**
+       * A minimum zoom level which will be displayed on the map.
+       */
+      minZoom: {
+        type: Number,
+        observer: '_minZoomChanged'
+      },
+
+      /**
+       * If true, sign-in is enabled.
+       * See https://developers.google.com/maps/documentation/javascript/signedin#enable_sign_in
+       */
+      signedIn: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * The localized language to load the Maps API with. For more information
+       * see https://developers.google.com/maps/documentation/javascript/basics#Language
+       *
+       * Note: the Maps API defaults to the preffered language setting of the browser.
+       * Use this parameter to override that behavior.
+       */
+      language: {
+        type: String
+      },
+
+      /**
+       * When true, map *click events are automatically registered.
+       */
+      clickEvents: {
+        type: Boolean,
+        value: false,
+        observer: '_clickEventsChanged'
+      },
+
+      /**
+       * When true, map drag* events are automatically registered.
+       */
+      dragEvents: {
+        type: Boolean,
+        value: false,
+        observer: '_dragEventsChanged'
+      },
+
+      /**
+       * When true, map mouse* events are automatically registered.
+       */
+      mouseEvents: {
+        type: Boolean,
+        value: false,
+        observer: '_mouseEventsChanged'
+      },
+
+      /**
+       * Additional map options for google.maps.Map constructor.
+       * Use to specify additional options we do not expose as
+       * properties.
+       * Ex: `<google-map additional-map-options='{"mapTypeId":"satellite"}'>`
+       */
+      additionalMapOptions: {
+        type: Object,
+        value: function() { return {}; }
+      }
+
+    },
+
+    observers: [
+      '_updateCenter(latitude longitude)'
+    ],
+
+    created: function() {
+      this.markers = [];
+    },
+
+    attached: function() {
+      this.resize();
+    },
+
+    detached: function() {
+      if (this._mutationObserver) {
+        this._mutationObserver.disconnect();
+      }
+    },
+
+    _mapApiLoaded: function() {
+      this.map = new google.maps.Map(this.$.map, this._getMapOptions());
+
+      this._listeners = {};
+      this._updateCenter();
+      this._updateMarkers();
+      this._addMapListeners();
+
+      this.fire('google-map-ready');
+    },
+
+    _getMapOptions: function() {
+      var mapOptions = {
+        zoom: this.zoom,
+        tilt: this.noAutoTilt ? 0 : 45,
+        mapTypeId: this.mapType,
+        disableDefaultUI: this.disableDefaultUi,
+        disableDoubleClickZoom: !this.zoomable,
+        scrollwheel: this.zoomable,
+        styles: styleArray,
+        maxZoom: 16,
+        minZoom: 19
+      };
+
+      // Only override the default if set.
+      // We use getAttribute here because the default value of this.draggable = false even when not set.
+      if (this.getAttribute('draggable') !== null) {
+        mapOptions.draggable = this.draggable;
+      }
+      for (var p in this.additionalMapOptions)
+        mapOptions[p] = this.additionalMapOptions[p];
+
+      return mapOptions;
+    },
+
+    _updateMarkers: function() {
+      this.markers = Array.prototype.slice.call(
+          Polymer.dom(this.$.markers).getDistributedNodes());
+
+      // Watch for future updates.
+      if (this._mutationObserver) {
+        this._mutationObserver.disconnect();
+      }
+      this._mutationObserver = new MutationObserver( this._updateMarkers.bind(this));
+      this._mutationObserver.observe(this, {
+        childList: true,
+        subtree: true
+      });
+
+      // Set the map on each marker and zoom viewport to ensure they're in view.
+      if (this.markers.length && this.map) {
+        for (var m = 0; m < this.markers.length; m++) {
+          m.map = this.map;
+        }
+
+        if (this.fitToMarkers) {
+          this._fitToMarkersChanged();
+        }
+      }
+    },
+
+    /**
+     * Clears all markers from the map.
+     *
+     * @method clear
+     */
+    clear: function() {
+      for (var m = 0; m < this.markers.length; m++) {
+        m.marker.setMap(null);
+      }
+    },
+
+    /**
+     * Explicitly resizes the map, updating its center. This is useful if the
+     * map does not show after you have unhidden it.
+     *
+     * @method resize
+     */
+    resize: function() {
+      if (this.map) {
+        google.maps.event.trigger(this.map, 'resize');
+        this._updateCenter();
+      }
+    },
+
+    _updateCenter: function() {
+      if (!this.map) {
+        return;
+      } else if (typeof this.latitude !== 'number' || isNaN(this.latitude)) {
+        throw new TypeError('latitude must be a number');
+      } else if (typeof this.longitude !== 'number' || isNaN(this.longitude)) {
+        throw new TypeError('longitude must be a number');
+      }
+
+      var newCenter = new google.maps.LatLng(this.latitude, this.longitude);
+      var oldCenter = this.map.getCenter();
+
+      if (!oldCenter) {
+        // If the map does not have a center, set it right away.
+        this.map.setCenter(newCenter);
+      } else {
+        // Using google.maps.LatLng returns corrected lat/lngs.
+        oldCenter = new google.maps.LatLng(oldCenter.lat(), oldCenter.lng());
+
+        // If the map currently has a center, slowly pan to the new one.
+        if (!oldCenter.equals(newCenter)) {
+          this.map.panTo(newCenter);
+        }
+      }
+    },
+
+    _zoomChanged: function() {
+      if (this.map) {
+        this.map.setZoom(Number(this.zoom));
+      }
+    },
+
+    _clickEventsChanged: function() {
+      if (this.map && this.marker) {
+        if (this.clickEvents) {
+          this._forwardEvent('click');
+          this._forwardEvent('dblclick');
+          this._forwardEvent('rightclick');
+        } else {
+          this._clearListener('click');
+          this._clearListener('dblclick');
+          this._clearListener('rightclick');
+        }
+      }
+    },
+
+    _dragEventsChanged: function() {
+      if (this.map) {
+        if (this.dragEvents) {
+          this._forwardEvent('drag');
+          this._forwardEvent('dragend');
+          this._forwardEvent('dragstart');
+        } else {
+          this._clearListener('drag');
+          this._clearListener('dragend');
+          this._clearListener('dragstart');
+        }
+      }
+    },
+
+    _mouseEventsChanged: function() {
+      if (this.map && this.marker) {
+        if (this.mouseEvents) {
+          this._forwardEvent('mousemove');
+          this._forwardEvent('mouseout');
+          this._forwardEvent('mouseover');
+        } else {
+          this._clearListener('mousemove');
+          this._clearListener('mouseout');
+          this._clearListener('mouseover');
+        }
+      }
+    },
+
+    _maxZoomChanged: function() {
+      if (this.map) {
+        this.map.setOptions({maxZoom: Number(this.maxZoom)});
+      }
+    },
+
+    _minZoomChanged: function() {
+      if (this.map) {
+        this.map.setOptions({minZoom: Number(this.minZoom)});
+      }
+    },
+
+    _mapTypeChanged: function() {
+      if (this.map) {
+        this.map.setMapTypeId(this.mapType);
+      }
+    },
+
+    _disableDefaultUiChanged: function() {
+      if (!this.map) {
+        return;
+      }
+      this.map.setOptions({disableDefaultUI: this.disableDefaultUi});
+    },
+
+    _zoomableChanged: function() {
+      if (!this.map) {
+        return;
+      }
+      this.map.setOptions({
+        disableDoubleClickZoom: !this.zoomable,
+        scrollwheel: this.zoomable
+      });
+    },
+
+    attributeChanged: function(attrName, oldVal, newVal) {
+      if (!this.map) {
+        return;
+      }
+      // Cannot use *Changed watchers for native properties.
+      switch (attrName) {
+        case 'draggable':
+          this.map.setOptions({draggable: this.draggable});
+          break;
+      }
+    },
+
+    _fitToMarkersChanged: function() {
+      // TODO(ericbidelman): respect user's zoom level.
+
+      if (this.map && this.fitToMarkers) {
+        var latLngBounds = new google.maps.LatLngBounds();
+        for (var m = 0; m < this.markers.length; m++) {
+          latLngBounds.extend(
+              new google.maps.LatLng(m.latitude, m.longitude));
+        }
+
+        // For one marker, don't alter zoom, just center it.
+        if (this.markers.length > 1) {
+          this.map.fitBounds(latLngBounds);
+        }
+
+        this.map.setCenter(latLngBounds.getCenter());
+      }
+    },
+
+    _addMapListeners: function() {
+      google.maps.event.addListener(this.map, 'center_changed', function() {
+        var center = this.map.getCenter();
+        this.latitude = center.lat();
+        this.longitude = center.lng();
+      }.bind(this));
+
+      google.maps.event.addListener(this.map, 'zoom_changed', function() {
+        this.zoom = this.map.getZoom();
+      }.bind(this));
+
+      this._clickEventsChanged();
+      this._dragEventsChanged();
+      this._mouseEventsChanged();
+    },
+
+    _clearListener: function(name) {
+      if (this._listeners[name]) {
+        google.maps.event.removeListener(this._listeners[name]);
+        this._listeners[name] = null;
+      }
+    },
+
+    _forwardEvent: function(name) {
+      this._listeners[name] = google.maps.event.addListener(this.map, name, function(event) {
+        this.fire('google-map-' + name, event);
+      }.bind(this));
+    }
+
+  });
+
+</script>

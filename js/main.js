@@ -1,413 +1,326 @@
-var map;
-
-function createMarkers() {
-    'use strict';
-    var i, result, marker;
-    var Model = {
-        pointsOfInterest: [{
-            "poiName": "Gellar House",
-            "poiLat": new google.maps.LatLng(34.148306, 118.335980),
-            "poiDesc": "Rachel and Monica get ready for the prom at Jack and Judy's house. This episode was voted the best episode leading up to the finale in 2004.",
-            "poiSearch": "Friends Midwest street KingsRow Sitcom"
+var ntsOfInterest = function() {
+    var self = this;
+    self.here = [{
+            "name": "Gellar House",
+            "lat": 34.14830,
+            "lng": -118.335980,
+            "desc": "Rachel and Monica get ready for the prom at Jack and Judy's house. This episode was voted the best episode leading up to the finale in 2004.",
+            "search": "Friends Midwest street KingsRow Sitcom"
         }, {
-            "poiName": "Walk to the Hockey Game",
-            "poiLat": new google.maps.LatLng(34.150414, -118.33694),
-            "poiDesc": "The guys walk to a hockey game, but Ross sees a peach pit on the sidewalk and remembers his first lesbian ex-wife",
-            "poiSearch": "Friends Hennesy street Sitcom"
+            "name": "Walk to the Hockey Game",
+            "lat": 34.150414,
+            "lng": -118.33694,
+            "desc": "The guys walk to a hockey game, but Ross sees a peach pit on the sidewalk and remembers his first lesbian ex-wife",
+            "search": "Friends Hennesy street Sitcom"
         }, {
-            "poiName": "$1000 and a Football Phone",
-            "poiLat": new google.maps.LatLng(34.150767, -118.33702),
-            "poiDesc": "Phoebe's bank accidentally gives her extra money that she wants to get rid of. She gives it to a homeless woman on Hennesy street street.",
-            "poiSearch": "Friends Hennesy street Sitcom"
+            "name": "$1000 and a Football Phone",
+            "lat": 34.150767,
+            "lng": -118.33702,
+            "desc": "Phoebe's bank accidentally gives her extra money that she wants to get rid of. She gives it to a homeless woman on Hennesy street street.",
+            "search": "Friends Hennesy street Sitcom"
         }, {
-            "poiName": "Phoebe Runs Weird",
-            "poiLat": new google.maps.LatLng(34.148936, -118.33724),
-            "poiDesc": "Rachel is embarassed by Phoebe's crazy style of running.",
-            "poiSearch": "Friends new york street Embassy court ct Sitcom"
+            "name": "Phoebe Runs Weird",
+            "lat": 34.148936,
+            "lng": -118.33724,
+            "desc": "Rachel is embarassed by Phoebe's crazy style of running.",
+            "search": "Friends new york street Embassy court ct Sitcom"
         }, {
-            "poiName": "Red Ross",
-            "poiLat": new google.maps.LatLng(34.149041, -118.33690),
-            "poiDesc": "Ross plays rugby to impress his new British girlfriend.",
-            "poiSearch": "Friends French street Sitcom"
+            "name": "Red Ross",
+            "lat": 34.149041,
+            "lng": -118.33690,
+            "desc": "Ross plays rugby to impress his new British girlfriend.",
+            "search": "Friends French street Sitcom"
         }, {
-            "poiName": "Chandler Chases Kathy",
-            "poiLat": new google.maps.LatLng(34.150562, -118.33692),
-            "poiDesc": "Chandler has a crush on Joey's girlfriend, who he chases down the street when she doesn't hear him say hello.",
-            "poiSearch": "Friends Hennesy street Sitcom"
+            "name": "Chandler Chases Kathy",
+            "lat": 34.150562,
+            "lng": -118.33692,
+            "desc": "Chandler has a crush on Joey's girlfriend, who he chases down the street when she doesn't hear him say hello.",
+            "search": "Friends Hennesy street Sitcom"
         }, {
-            "poiName": "Ross gets Waterballooned",
-            "poiLat": new google.maps.LatLng(34.149554, -118.33794),
-            "poiDesc": "Ross breaks up with his much younger girlfriend, Elizabeth. He is reconsidering when she starts throwing water balloons at him from her dorm room window.",
-            "poiSearch": "Friends new york street Sitcom"
+            "name": "Ross gets Waterballooned",
+            "lat": 34.149554,
+            "lng": -118.33794,
+            "desc": "Ross breaks up with his much younger girlfriend, Elizabeth. He is reconsidering when she starts throwing water balloons at him from her dorm room window.",
+            "search": "Friends new york street Sitcom"
         }, {
-            "poiName": "Stage 24",
-            "poiLat": new google.maps.LatLng(34.148928, -118.33808),
-            "poiDesc": "The Friends Stage",
-            "poiSearch": "Friends front lot Sitcom"
+            "name": "Stage 24",
+            "lat": 34.148928,
+            "lng": -118.33808,
+            "desc": "The Friends Stage",
+            "search": "Friends front lot Sitcom"
         }, {
-            "poiName": "Gilmore House",
-            "poiLat": new google.maps.LatLng(34.148066, -118.33596),
-            "poiDesc": "Home of Lorelei and Rory Gilmore",
-            "poiSearch": "gilmore girls kingsrow midw Drama"
+            "name": "Gilmore House",
+            "lat": 34.148066,
+            "lng": -118.33596,
+            "desc": "Home of Lorelei and Rory Gilmore",
+            "search": "gilmore girls kingsrow midw Drama"
         }, {
-            "poiName": "Stars Hollow High",
-            "poiLat": new google.maps.LatLng(34.148492, -118.33665),
-            "poiDesc": "School Rory attends for an episode or two.",
-            "poiSearch": "gilmore girls midwest street Drama"
+            "name": "Stars Hollow High",
+            "lat": 34.148492,
+            "lng": -118.33665,
+            "desc": "School Rory attends for an episode or two.",
+            "search": "gilmore girls midwest street Drama"
         }, {
-            "poiName": "Gazebo",
-            "poiLat": new google.maps.LatLng(34.148628, -118.33621),
-            "poiDesc": "Iconic landmark from the show.",
-            "poiSearch": "gilmore girls midwest street Drama"
+            "name": "Gazebo",
+            "lat": 34.148628,
+            "lng": -118.33621,
+            "desc": "Iconic landmark from the show.",
+            "search": "gilmore girls midwest street Drama"
         }, {
-            "poiName": "Weston's Bakery",
-            "poiLat": new google.maps.LatLng(34.148453, -118.33693),
-            "poiDesc": "Town bakery",
-            "poiSearch": "gilmore girls french street Drama"
+            "name": "Weston's Bakery",
+            "lat": 34.148453,
+            "lng": -118.33693,
+            "desc": "Town bakery",
+            "search": "gilmore girls french street Drama"
         }, {
-            "poiName": "Miss Patty's",
-            "poiLat": new google.maps.LatLng(34.148880, -118.33696),
-            "poiDesc": "Rory and Jess fall asleep together here and stay out all night.",
-            "poiSearch": "gilmore girls french street Drama"
+            "name": "Miss Patty's",
+            "lat": 34.148880,
+            "lng": -118.33696,
+            "desc": "Rory and Jess fall asleep together here and stay out all night.",
+            "search": "gilmore girls french street Drama"
         }, {
-            "poiName": "Luke's Diner",
-            "poiLat": new google.maps.LatLng(34.149016, -118.33662),
-            "poiDesc": "Coffee, please.",
-            "poiSearch": "gilmore girls midwest street Drama"
+            "name": "Luke's Diner",
+            "lat": 34.149016,
+            "lng": -118.33662,
+            "desc": "Coffee, please.",
+            "search": "gilmore girls midwest street Drama"
         }, {
-            "poiName": "Rory gets hit by a deer",
-            "poiLat": new google.maps.LatLng(34.149421, -118.33411),
-            "poiDesc": "No. She was hit. Not she hit.",
-            "poiSearch": "gilmore girls jungle Drama"
+            "name": "Rory gets hit by a deer",
+            "lat": 34.149421,
+            "lng": -118.33411,
+            "desc": "No. She was hit. Not she hit.",
+            "search": "gilmore girls jungle Drama"
         }, {
-            "poiName": "Doose's Market",
-            "poiLat": new google.maps.LatLng(34.148942, -118.33626),
-            "poiDesc": "There's a good aisle inside.",
-            "poiSearch": "gilmore girls midwest street Drama"
+            "name": "Doose's Market",
+            "lat": 34.148942,
+            "lng": -118.33626,
+            "desc": "There's a good aisle inside.",
+            "search": "gilmore girls midwest street Drama"
         }, {
-            "poiName": "Hewes bros service station",
-            "poiLat": new google.maps.LatLng(34.148375, -118.33572),
-            "poiDesc": "Car trouble?",
-            "poiSearch": "gilmore girls midwest street Drama"
+            "name": "Hewes bros service station",
+            "lat": 34.148375,
+            "lng": -118.33572,
+            "desc": "Car trouble?",
+            "search": "gilmore girls midwest street Drama"
         }, {
-            "poiName": "Bangles concert",
-            "poiLat": new google.maps.LatLng(34.149712, -118.33839),
-            "poiDesc": "The Chilton girls abandon the concert and Lorelei has to go kick some ass.",
-            "poiSearch": "gilmore girls new york brownstone street Drama"
+            "name": "Bangles concert",
+            "lat": 34.149712,
+            "lng": -118.33839,
+            "desc": "The Chilton girls abandon the concert and Lorelei has to go kick some ass.",
+            "search": "gilmore girls new york brownstone street Drama"
         }, {
-            "poiName": "Luke shoves Jess in the lake",
-            "poiLat": new google.maps.LatLng(34.149515, -118.33419),
-            "poiDesc": "Exactly like it says.",
-            "poiSearch": "gilmore girls jungle Drama"
+            "name": "Luke shoves Jess in the lake",
+            "lat": 34.149515,
+            "lng": -118.33419,
+            "desc": "Exactly like it says.",
+            "search": "gilmore girls jungle Drama"
         }, {
-            "poiName": "Chilton Gates",
-            "poiLat": new google.maps.LatLng(34.149189, -118.33742),
-            "poiDesc": "Also the museum where Emily goes on a date",
-            "poiSearch": "gilmore girls new york street embassy court ct Drama"
+            "name": "Chilton Gates",
+            "lat": 34.149189,
+            "lng": -118.33742,
+            "desc": "Also the museum where Emily goes on a date",
+            "search": "gilmore girls new york street embassy court ct Drama"
         }, {
-            "poiName": "Rory's Study Tree",
-            "poiLat": new google.maps.LatLng(34.149074, -118.33717),
-            "poiDesc": "Peace and quiet at Yale",
-            "poiSearch": "gilmore girls new york street embassy court ct Drama"
+            "name": "Rory's Study Tree",
+            "lat": 34.149074,
+            "lng": -118.33717,
+            "desc": "Peace and quiet at Yale",
+            "search": "gilmore girls new york street embassy court ct Drama"
         }, {
-            "poiName": "Spencer's House",
-            "poiLat": new google.maps.LatLng(34.148066, -118.33596),
-            "poiDesc": "Home of Spencer Hastings, site of murders galore.",
-            "poiSearch": "pretty little liars midwest street kingsrow Drama"
+            "name": "Spencer's House",
+            "lat": 34.148066,
+            "lng": -118.33596,
+            "desc": "Home of Spencer Hastings, site of murders galore.",
+            "search": "pretty little liars midwest street kingsrow Drama"
         }, {
-            "poiName": "Rosewood High",
-            "poiLat": new google.maps.LatLng(34.148492, -118.33665),
-            "poiDesc": "Sit outside and stare as Mona walks in.",
-            "poiSearch": "pretty little liars midwest street Drama"
+            "name": "Rosewood High",
+            "lat": 34.148492,
+            "lng": -118.33665,
+            "desc": "Sit outside and stare as Mona walks in.",
+            "search": "pretty little liars midwest street Drama"
         }, {
-            "poiName": "Apple Rose Grill",
-            "poiLat": new google.maps.LatLng(34.149016, -118.33662),
-            "poiDesc": "Hungry?",
-            "poiSearch": "pretty little liars midwest street Drama"
+            "name": "Apple Rose Grill",
+            "lat": 34.149016,
+            "lng": -118.33662,
+            "desc": "Hungry?",
+            "search": "pretty little liars midwest street Drama"
         }, {
-            "poiName": "Hanna gets hit by a car",
-            "poiLat": new google.maps.LatLng(34.149421, -118.33411),
-            "poiDesc": "And 1000 other things. They are in these woods a lot.",
-            "poiSearch": "pretty little liars jungle Drama"
+            "name": "Hanna gets hit by a car",
+            "lat": 34.149421,
+            "lng": -118.33411,
+            "desc": "And 1000 other things. They are in these woods a lot.",
+            "search": "pretty little liars jungle Drama"
         }, {
-            "poiName": "The Greenhouse Meeting with A",
-            "poiLat": new google.maps.LatLng(34.149515, -118.33419),
-            "poiDesc": "The girls trick A into meeting with them and they end up getting his/her cell phone.",
-            "poiSearch": "pretty little liars jungle Drama"
+            "name": "The Greenhouse Meeting with A",
+            "lat": 34.149515,
+            "lng": -118.33419,
+            "desc": "The girls trick A into meeting with them and they end up getting his/her cell phone.",
+            "search": "pretty little liars jungle Drama"
         }, {
-            "poiName": "Radley Mental Institution",
-            "poiLat": new google.maps.LatLng(34.149189, -118.33742),
-            "poiDesc": "The exterior of the mental institution that continually crops up in the main story.",
-            "poiSearch": "pretty little liars new york street embassy court ct Drama"
+            "name": "Radley Mental Institution",
+            "lat": 34.149189,
+            "lng": -118.33742,
+            "desc": "The exterior of the mental institution that continually crops up in the main story.",
+            "search": "pretty little liars new york street embassy court ct Drama"
         }, {
-            "poiName": "Emily's House",
-            "poiLat": new google.maps.LatLng(34.148306, -118.33598),
-            "poiDesc": "Home of Emily Fields",
-            "poiSearch": "pretty little liars midwest street kingsrow Drama"
+            "name": "Emily's House",
+            "lat": 34.148306,
+            "lng": -118.33598,
+            "desc": "Home of Emily Fields",
+            "search": "pretty little liars midwest street kingsrow Drama"
         }, {
-            "poiName": "Rear Window Brew",
-            "poiLat": new google.maps.LatLng(34.149088, -118.33619),
-            "poiDesc": "Ezra owns it. Emily works there.",
-            "poiSearch": "pretty little liars midwest street Drama"
+            "name": "Rear Window Brew",
+            "lat": 34.149088,
+            "lng": -118.33619,
+            "desc": "Ezra owns it. Emily works there.",
+            "search": "pretty little liars midwest street Drama"
         }, {
-            "poiName": "Church",
-            "poiLat": new google.maps.LatLng(34.148562, -118.33585),
-            "poiDesc": "Finale of season 1 (exterior). Interior was shot inside the fire station across the square.",
-            "poiSearch": "pretty little liars midwest street Drama"
+            "name": "Church",
+            "lat": 34.148562,
+            "lng": -118.33585,
+            "desc": "Finale of season 1 (exterior). Interior was shot inside the fire station across the square.",
+            "search": "pretty little liars midwest street Drama"
         }, {
-            "poiName": "Police Station/City Hall",
-            "poiLat": new google.maps.LatLng(34.148694, -118.33655),
-            "poiDesc": "When are they not here?",
-            "poiSearch": "pretty little liars midwest street Drama"
+            "name": "Police Station/City Hall",
+            "lat": 34.148694,
+            "lng": -118.33655,
+            "desc": "When are they not here?",
+            "search": "pretty little liars midwest street Drama"
         }, {
-            "poiName": "Abandoned house from season 2",
-            "poiLat": new google.maps.LatLng(34.148289, -118.33644),
-            "poiDesc": "Ali takes them in to scare them",
-            "poiSearch": "pretty little liars midwest street kingsrow Drama"
+            "name": "Abandoned house from season 2",
+            "lat": 34.148289,
+            "lng": -118.33644,
+            "desc": "Ali takes them in to scare them",
+            "search": "pretty little liars midwest street kingsrow Drama"
         }, {
-            "poiName": "Aria's porch",
-            "poiLat": new google.maps.LatLng(34.148000, -118.33645),
-            "poiDesc": "The rest of the house is in Canada",
-            "poiSearch": "pretty little liars midwest street kingsrow Drama"
+            "name": "Aria's porch",
+            "lat": 34.148000,
+            "lng": -118.33645,
+            "desc": "The rest of the house is in Canada",
+            "search": "pretty little liars midwest street kingsrow Drama"
         }, {
-            "poiName": "Hanna's House",
-            "poiLat": new google.maps.LatLng(34.148385, -118.33333),
-            "poiDesc": "She lives far away from anyone else",
-            "poiSearch": "pretty little liars warnervillage Drama"
+            "name": "Hanna's House",
+            "lat": 34.148385,
+            "lng": -118.33333,
+            "desc": "She lives far away from anyone else",
+            "search": "pretty little liars warnervillage Drama"
         }, {
-            "poiName": "Dilaurentis's House",
-            "poiLat": new google.maps.LatLng(34.149385, -118.33373),
-            "poiDesc": "Built for this production",
-            "poiSearch": "pretty little liars jungle Drama"
+            "name": "Dilaurentis's House",
+            "lat": 34.149385,
+            "lng": -118.33373,
+            "desc": "Built for this production",
+            "search": "pretty little liars jungle Drama"
         }, {
-            "poiName": "Ezra's Cabin",
-            "poiLat": new google.maps.LatLng(34.149892, -118.33401),
-            "poiDesc": "A convenient hideaway",
-            "poiSearch": "pretty little liars jungle Drama"
+            "name": "Ezra's Cabin",
+            "lat": 34.149892,
+            "lng": -118.33401,
+            "desc": "A convenient hideaway",
+            "search": "pretty little liars jungle Drama"
         }, {
-            "poiName": "Ally's Memorial / Grave",
-            "poiLat": new google.maps.LatLng(34.148887, -118.33732),
-            "poiDesc": "Right across the street from Radley",
-            "poiSearch": "pretty little liars new york street embassy court ct Drama"
+            "name": "Ally's Memorial / Grave",
+            "lat": 34.148887,
+            "lng": -118.33732,
+            "desc": "Right across the street from Radley",
+            "search": "pretty little liars new york street embassy court ct Drama"
         }, {
-            "poiName": "Stage 6",
-            "poiLat": new google.maps.LatLng(34.147422, -118.34078),
-            "poiDesc": "The soundstage",
-            "poiSearch": "pretty little liars front lot Drama"
+            "name": "Stage 6",
+            "lat": 34.147422,
+            "lng": -118.34078,
+            "desc": "The soundstage",
+            "search": "pretty little liars front lot Drama"
         }, {
-            "poiName": "Stages 7 and 8",
-            "poiLat": new google.maps.LatLng(34.147100, -118.34051),
-            "poiDesc": "More soundstages",
-            "poiSearch": "pretty little liars front lot Drama"
+            "name": "Stages 7 and 8",
+            "lat": 34.147100,
+            "lng": -118.34051,
+            "desc": "More soundstages",
+            "search": "pretty little liars front lot Drama"
         }, {
-            "poiName": "Stage 25",
-            "poiLat": new google.maps.LatLng(34.148416, -118.33785),
-            "poiDesc": "The soundstage",
-            "poiSearch": "big bang front lot sitcom"
+            "name": "Stage 25",
+            "lat": 34.148416,
+            "lng": -118.33785,
+            "desc": "The soundstage",
+            "search": "big bang front lot sitcom"
         }, {
-            "poiName": "Raiding Raiders of the Lost Arc",
-            "poiLat": new google.maps.LatLng(34.149561, -118.33753),
-            "poiDesc": "Sheldon and the gang stand in line to see the movie, but Sheldon ends up stealing the print and running away.",
-            "poiSearch": "big bang new york street sitcom"
+            "name": "Raiding Raiders of the Lost Arc",
+            "lat": 34.149561,
+            "lng": -118.33753,
+            "desc": "Sheldon and the gang stand in line to see the movie, but Sheldon ends up stealing the print and running away.",
+            "search": "big bang new york street sitcom"
         }, {
-            "poiName": "Apartment Exterior",
-            "poiLat": new google.maps.LatLng(34.148282, -118.33695),
-            "poiDesc": "The outside of the apartment building",
-            "poiSearch": "big bang french street sitcom"
+            "name": "Apartment Exterior",
+            "lat": 34.148282,
+            "lng": -118.33695,
+            "desc": "The outside of the apartment building",
+            "search": "big bang french street sitcom"
         }, {
-            "poiName": "Museum (water, restrooms)",
-            "poiLat": new google.maps.LatLng(34.150085, -118.33877),
-            "poiSearch": "water restroom"
+            "name": "Museum (water, restrooms)",
+            "lat": 34.150085,
+            "lng": -118.33877,
+            "search": "water restroom"
         }, {
-            "poiName": "Stage 9 (bathrooms and water)",
-            "poiLat": new google.maps.LatLng(34.147714, -118.34037),
-            "poiSearch": "water restroom"
+            "name": "Stage 9 (bathrooms and water)",
+            "lat": 34.147714,
+            "lng": -118.34037,
+            "search": "water restroom"
         }, {
-            "poiName": "Audience staging (water)",
-            "poiLat": new google.maps.LatLng(34.147538, -118.33566),
-            "poiSearch": "restroom"
+            "name": "Audience staging (water)",
+            "lat": 34.147538,
+            "lng": -118.33566,
+            "search": "restroom"
         }, {
-            "poiName": "Mill Store",
-            "poiLat": new google.maps.LatLng(34.147081, -118.33918),
-            "poiSearch": "water restroom soda food"
+            "name": "Mill Store",
+            "lat": 34.147081,
+            "lng": -118.33918,
+            "search": "water restroom soda food"
         }, {
-            "poiName": "Stage 25 (soda machine and restrooms)",
-            "poiLat": new google.maps.LatLng(34.148210, -118.33737),
-            "poiSearch": "water restroom soda"
+            "name": "Stage 25 (soda machine and restrooms)",
+            "lat": 34.148210,
+            "lng": -118.33737,
+            "search": "water restroom soda"
         }, {
-            "poiName": "Parking/ Costumes (restrooms, soda on west side)",
-            "poiLat": new google.maps.LatLng(34.147790, -118.33430),
-            "poiSearch": "water restroom soda"
+            "name": "Parking/ Costumes (restrooms, soda on west side)",
+            "lat": 34.147790,
+            "lng": -118.33430,
+            "search": "water restroom soda"
         }, {
-            "poiName": "Commisary",
-            "poiLat": new google.maps.LatLng(34.149279, -118.33922),
-            "poiSearch": "water restroom soda"
+            "name": "Commisary",
+            "lat": 34.149279,
+            "lng": -118.33922,
+            "search": "water restroom soda"
         }, {
-            "poiName": "Avon Grill",
-            "poiLat": new google.maps.LatLng(34.148892, -118.33565),
-            "poiSearch": "water restroom soda food"
+            "name": "Avon Grill",
+            "lat": 34.148892,
+            "lng": -118.33565,
+            "search": "water restroom soda food"
         }, {
-            "poiName": "Tan building (restroom)",
-            "poiLat": new google.maps.LatLng(34.149325, -118.33433),
-            "poiSearch": "restroom"
+            "name": "Tan building (restroom)",
+            "lat": 34.149325,
+            "lng": -118.33433,
+            "search": "restroom"
         }, {
-            "poiName": "Restrooms near Dr. Ross end",
-            "poiLat": new google.maps.LatLng(34.150420, -118.33638),
-            "poiSearch": "restroom"
+            "name": "Restrooms near Dr. Ross end",
+            "lat": 34.150420,
+            "lng": -118.33638,
+            "search": "restroom"
         }, {
-            "poiName": "Post-Production (restrooms)",
-            "poiLat": new google.maps.LatLng(34.150277, -118.33922),
-            "poiSearch": "restroom"
+            "name": "Post-Production (restrooms)",
+            "lat": 34.150277,
+            "lng": -118.33922,
+            "search": "restroom"
         }, {
-            "poiName": "Restrooms not for guests (Ellen's talent entrance)",
-            "poiLat": new google.maps.LatLng(34.148388, -118.34173),
-            "poiSearch": "restroom"
+            "name": "Restrooms not for guests (Ellen's talent entrance)",
+            "lat": 34.148388,
+            "lng": -118.34173,
+            "search": "restroom"
         }, {
-            "poiName": "Restrooms at stage 21",
-            "poiLat": new google.maps.LatLng(34.147628, -118.33852),
-            "poiSearch": "restroom"
+            "name": "Restrooms at stage 21",
+            "lat": 34.147628,
+            "lng": -118.33852,
+            "search": "restroom"
         }, {
-            "poiName": "Bridge cafe",
-            "poiLat": new google.maps.LatLng(34.147937, -118.33490),
-            "poiSearch": "water restroom soda food"
-        }]
+            "name": "Bridge cafe",
+            "lat": 34.147937,
+            "lng": -118.33490,
+            "search": "water restroom soda food"
+        }];
     };
-
-    var ViewModel = function() {
-        var self = this;
-        self.searchQuery = ko.observable("");
-
-        self.myMarkers = ko.observableArray();
-
-        self.listView = ko.observable(false);
-        self.searchView = ko.observable(true);
-        self.infoView = ko.observable(false);
-
-        self.infoTitle = ko.observable();
-        self.infoDesc = ko.observable();
-
-        self.infoWindow = function(clicked) {
-            self.infoTitle(clicked.poiName);
-            self.infoDesc(clicked.poiDesc);
-            self.infoView(true);
-        };
-
-        self.infoClose = function() {
-            self.infoView(false);
-        };
-
-        self.toggleSearch = function() {
-            self.searchView(!self.searchView());
-        };
-
-        self.goToLocation = function(marked) {
-            if (self.searchView()) {
-                self.toggleSearch();
-            }
-            map.panTo(marked.position);
-            map.setZoom(20);
-        };
-
-        self.listen = function() {
-            self.infoWindow(this);
-            self.goToLocation(this);
-        };
-
-        self.parseResults = function(responses) {
-
-            if (responses.length <= 0) {
-                console.log('Something is wrong here');
-            } else {
-                var markers = [];
-                for (var i = 0; i < responses.length; i++) {
-                    marker = new google.maps.Marker({
-                        position: responses.poiLat,
-                        map: map,
-                        title: responses.poiName,
-                        searchMe: responses.poiSearch
-                    });
-                    markers.push(marker);
-                    google.maps.event.addListener(marker, 'click', self.listen);
-                }
-                self.myMarkers(markers);
-            }
-        };
-
-        self.filteredItems = ko.computed(function() {
-            var filter = self.searchQuery().toLowerCase();
-        console.log(pointsOfInterest.length);
-        console.log(self.searchQuery());
-                return ko.utils.arrayFilter(self.myMarkers(), function(item) {
-                    if (item.searchMe.toLowerCase().indexOf(filter) !== -1) {
-                        item.setMap(map);
-                        return item;
-                    } else {
-                        item.setMap(null);
-                    }
-                }, self);
-            }
-        );};
-
-        self.clearSearch = function() {
-            self.searchQuery("");
-        };
-
-        self.clearMarkers = function() {
-            for (var i = 0; self.myMarkers().length; i++) {
-                self.myMarkers()[i].setMap(null);
-            }
-        };
-
-        self.searches = function() {
-            self.clearSearch();
-            self.clearMarkers();
-            self.myMarkers([]);
-            self.parseResults();
-        };
-
-        $(document).mouseup(function(e) {
-            var myWindow = $('#infowindow');
-            if (!myWindow.is(e.target) && myWindow.has(e.target).length === 0) {
-                self.infoClose();
-            }
-        });
-         self.parseResults(pointsOfInterest);
-
-        self.ifEnter = function(data, event) {
-            if (event.which === 13) {
-                self.parseResults();
-                self.searchQuery("");
-            } else if (event.which === 8 || event.which === 46) {
-                console.log('delete');
-            }
-            return true;
-        };
-
-         ko.applyBindings(new ViewModel());
-
-    }
-
-$(function initialize() {
-    'use strict';
-    self.warnerBros = new google.maps.LatLng(34.148955, -118.337912);
-
-    // Set Map Options
-    self.mapOptions = {
-        center: self.warnerBros,
-        zoom: 17,
-        draggable: true
-    };
-
-    // Create Map Object
-    map = new google.maps.Map(document.getElementById('map-canvas'),
-        mapOptions);
-
-    // Apply Styles
-    map.setOptions({
-        styles: styleArray
-    });
-
-    //
-    createMarkers(pointsOfInterest);
-    console.log('running');
-});
